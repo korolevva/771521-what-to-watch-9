@@ -1,7 +1,7 @@
 # Личный проект «Что посмотреть»
 
-* Студент: [Vitaly Korolev](https://up.htmlacademy.ru/react/9/user/771521).
-* Наставник: `Неизвестно`.
+- Студент: [Vitaly Korolev](https://up.htmlacademy.ru/react/9/user/771521).
+- Наставник: [Семен Якушев](https://htmlacademy.ru/profile/id1118791)
 
 ---
 
