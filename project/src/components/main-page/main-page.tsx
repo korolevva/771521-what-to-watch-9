@@ -1,4 +1,7 @@
-import SmallFilmCard from '../smallFilmCard/smallFilmCard';
+import { Link } from 'react-router-dom';
+import { AppRoute } from '../../types/const';
+import Logo from '../logo/logo';
+import SmallFilmCard from '../small-film-card/small-film-card';
 
 type Props = {
   filmCardTitle: string;
@@ -112,13 +115,7 @@ function MainPage({ filmCardTitle, filmCardGenre, filmCardYear }: Props) {
         <h1 className="visually-hidden">WTW</h1>
 
         <header className="page-header film-card__head">
-          <div className="logo">
-            <a className="logo__link">
-              <span className="logo__letter logo__letter--1">W</span>
-              <span className="logo__letter logo__letter--2">T</span>
-              <span className="logo__letter logo__letter--3">W</span>
-            </a>
-          </div>
+          <Logo />
 
           <ul className="user-block">
             <li className="user-block__item">
@@ -132,7 +129,9 @@ function MainPage({ filmCardTitle, filmCardGenre, filmCardYear }: Props) {
               </div>
             </li>
             <li className="user-block__item">
-              <a className="user-block__link">Sign out</a>
+              <Link to={AppRoute.SignIn} className="user-block__link">
+                Sign out
+              </Link>
             </li>
           </ul>
         </header>
@@ -165,15 +164,17 @@ function MainPage({ filmCardTitle, filmCardGenre, filmCardYear }: Props) {
                   </svg>
                   <span>Play</span>
                 </button>
-                <button
-                  className="btn btn--list film-card__button"
-                  type="button"
-                >
-                  <svg viewBox="0 0 19 20" width="19" height="20">
-                    <use xlinkHref="#add"></use>
-                  </svg>
-                  <span>My list</span>
-                </button>
+                <Link to={AppRoute.MyList}>
+                  <button
+                    className="btn btn--list film-card__button"
+                    type="button"
+                  >
+                    <svg viewBox="0 0 19 20" width="19" height="20">
+                      <use xlinkHref="#add"></use>
+                    </svg>
+                    <span>My list</span>
+                  </button>
+                </Link>
               </div>
             </div>
           </div>
@@ -238,18 +239,6 @@ function MainPage({ filmCardTitle, filmCardGenre, filmCardYear }: Props) {
           </ul>
 
           <div className="catalog__films-list">
-            <SmallFilmCard />
-            <SmallFilmCard />
-            <SmallFilmCard />
-            <SmallFilmCard />
-            <SmallFilmCard />
-            <SmallFilmCard />
-            <SmallFilmCard />
-            <SmallFilmCard />
-            <SmallFilmCard />
-            <SmallFilmCard />
-            <SmallFilmCard />
-            <SmallFilmCard />
             <SmallFilmCard />
             <SmallFilmCard />
             <SmallFilmCard />
