@@ -5,8 +5,7 @@ import MainPage from '../main-page/main-page';
 import MyList from '../my-list/my-list';
 import NotFoundPage from '../not-found-page/not-found-page';
 import MoviePage from '../movie-page/movie-page';
-// import SignIn from '../sign-in/sign-in';
-import PrivateRoute from '../private-route';
+import PrivateRoute from '../private-route/private-route';
 import Player from '../player/player';
 import SignIn from '../sign-in/sign-in';
 
@@ -49,9 +48,7 @@ function App({ filmCardTitle, filmCardGenre, filmCardYear }: Props) {
           }
         />
       </Route>
-      <Route path={AppRoute.Play}>
-        <Route path=":id" element={<Player />} />
-      </Route>
+      <Route path={`${AppRoute.Play}/:id`} element={<Player />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
