@@ -1,15 +1,14 @@
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../types/const';
+import { Film } from '../../types/film';
+import ListFilms from '../list-films/list-films';
 import Logo from '../logo/logo';
-import SmallFilmCard from '../small-film-card/small-film-card';
 
 type Props = {
-  filmCardTitle: string;
-  filmCardGenre: string;
-  filmCardYear: number;
+  films: Film[];
 };
 
-function MainPage({ filmCardTitle, filmCardGenre, filmCardYear }: Props) {
+function MainPage({ films }: Props) {
   return (
     <>
       <div className="visually-hidden">
@@ -148,22 +147,25 @@ function MainPage({ filmCardTitle, filmCardGenre, filmCardYear }: Props) {
             </div>
 
             <div className="film-card__desc">
-              <h2 className="film-card__title">{filmCardTitle}</h2>
+              <h2 className="film-card__title">{films[0].name}</h2>
               <p className="film-card__meta">
-                <span className="film-card__genre">{filmCardGenre}</span>
-                <span className="film-card__year">{filmCardYear}</span>
+                <span className="film-card__genre">{films[0].genre}</span>
+                <span className="film-card__year">{films[0].released}</span>
               </p>
 
               <div className="film-card__buttons">
-                <button
-                  className="btn btn--play film-card__button"
-                  type="button"
-                >
-                  <svg viewBox="0 0 19 19" width="19" height="19">
-                    <use xlinkHref="#play-s"></use>
-                  </svg>
-                  <span>Play</span>
-                </button>
+                <Link to={`${AppRoute.Play}/${films[0].id}`}>
+                  <button
+                    className="btn btn--play film-card__button"
+                    type="button"
+                  >
+                    <svg viewBox="0 0 19 19" width="19" height="19">
+                      <use xlinkHref="#play-s"></use>
+                    </svg>
+
+                    <span>Play</span>
+                  </button>
+                </Link>
                 <Link to={AppRoute.MyList}>
                   <button
                     className="btn btn--list film-card__button"
@@ -238,16 +240,7 @@ function MainPage({ filmCardTitle, filmCardGenre, filmCardYear }: Props) {
             </li>
           </ul>
 
-          <div className="catalog__films-list">
-            <SmallFilmCard />
-            <SmallFilmCard />
-            <SmallFilmCard />
-            <SmallFilmCard />
-            <SmallFilmCard />
-            <SmallFilmCard />
-            <SmallFilmCard />
-            <SmallFilmCard />
-          </div>
+          <ListFilms films={films} />
 
           <div className="catalog__more">
             <button className="catalog__button" type="button">

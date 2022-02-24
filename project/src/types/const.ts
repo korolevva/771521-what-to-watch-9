@@ -3,11 +3,12 @@ export enum AppRoute {
   SignIn = '/login',
   MyList = '/mylist',
   Film = '/films',
-  Play='/player'
+  Play = '/player',
+  Review = '/review',
 }
 
 export enum AuthorizationStatus {
   Auth = 'AUTH',
   NoAuth = 'NOAUTH',
-  Unknown = 'UNKNOWN'
+  Unknown = 'UNKNOWN',
 }

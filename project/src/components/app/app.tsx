@@ -8,26 +8,16 @@ import MoviePage from '../movie-page/movie-page';
 import PrivateRoute from '../private-route/private-route';
 import Player from '../player/player';
 import SignIn from '../sign-in/sign-in';
+import { Film } from '../../types/film';
 
 type Props = {
-  filmCardTitle: string;
-  filmCardGenre: string;
-  filmCardYear: number;
+  films: Film[];
 };
 
-function App({ filmCardTitle, filmCardGenre, filmCardYear }: Props) {
+function App({ films }: Props) {
   return (
     <Routes>
-      <Route
-        path={AppRoute.Main}
-        element={
-          <MainPage
-            filmCardTitle={filmCardTitle}
-            filmCardGenre={filmCardGenre}
-            filmCardYear={filmCardYear}
-          />
-        }
-      />
+      <Route path={AppRoute.Main} element={<MainPage films={films} />} />
       <Route path={AppRoute.SignIn} element={<SignIn />} />
       <Route
         path={AppRoute.MyList}
@@ -42,7 +32,7 @@ function App({ filmCardTitle, filmCardGenre, filmCardYear }: Props) {
         <Route
           path=":id/review"
           element={
-            <PrivateRoute authorizationStatus={AuthorizationStatus.NoAuth}>
+            <PrivateRoute authorizationStatus={AuthorizationStatus.Auth}>
               <AddReview />
             </PrivateRoute>
           }
