@@ -1,4 +1,11 @@
+import { useParams } from 'react-router-dom';
+import { films } from '../mocks/films';
+
 function Player() {
+  const { id } = useParams();
+  const film =
+    films.find((currentFilm) => currentFilm.id === Number(id)) || films[0];
+
   return (
     <>
       <div className="visually-hidden">
@@ -87,9 +94,9 @@ function Player() {
 
       <div className="player">
         <video
-          src="#"
+          src={film.videoLink}
           className="player__video"
-          poster="img/player-poster.jpg"
+          poster={film.posterImage}
         />
 
         <button type="button" className="player__exit">
@@ -104,7 +111,7 @@ function Player() {
                 Toggler
               </div>
             </div>
-            <div className="player__time-value">1:30:29</div>
+            <div className="player__time-value">{film.runTime}</div>
           </div>
 
           <div className="player__controls-row">
@@ -114,7 +121,7 @@ function Player() {
               </svg>
               <span>Play</span>
             </button>
-            <div className="player__name">Transpotting</div>
+            <div className="player__name">{film.name}</div>
 
             <button type="button" className="player__full-screen">
               <svg viewBox="0 0 27 27" width="27" height="27">
