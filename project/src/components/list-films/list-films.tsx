@@ -20,6 +20,7 @@ function ListFilms({ films }: Props) {
           posterImage={film.posterImage}
           id={film.id}
           onActiveFilmsSet={setActiveFilm}
+          videoLink={film.videoLink}
         />
       ))}
     </div>
