@@ -48,7 +48,10 @@ function SmallFilmCard({
         />
       </div>
       <h3 className="small-film-card__title">
-        <Link className="small-film-card__link" to={`${AppRoute.Film}/${id}`}>
+        <Link
+          className="small-film-card__link"
+          to={`${AppRoute.Film}/${id}/overview`}
+        >
           {name}
         </Link>
       </h3>
