@@ -1,6 +1,4 @@
-import ListFilms from '../list-films/list-films';
 import Logo from '../logo/logo';
-import { films } from '../mocks/films';
 
 function MyList() {
   return (
@@ -114,8 +112,8 @@ function MyList() {
 
         <section className="catalog">
           <h2 className="catalog__title visually-hidden">Catalog</h2>
-
-          <ListFilms films={films} />
+          {/* TODO: реализовать компонент понравившихся фильмов */}
+          {/* <ListFilms films={films} /> */}
         </section>
 
         <footer className="page-footer">

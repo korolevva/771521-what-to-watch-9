@@ -7,17 +7,12 @@ import NotFoundPage from '../not-found-page/not-found-page';
 import PrivateRoute from '../private-route/private-route';
 import Player from '../player/player';
 import SignIn from '../sign-in/sign-in';
-import { Film } from '../../types/film';
 import Movie from '../movie/movie';
 
-type Props = {
-  films: Film[];
-};
-
-function App({ films }: Props) {
+function App() {
   return (
     <Routes>
-      <Route path={AppRoute.Main} element={<MainPage films={films} />} />
+      <Route path={AppRoute.Main} element={<MainPage />} />
       <Route path={AppRoute.SignIn} element={<SignIn />} />
       <Route
         path={AppRoute.MyList}
