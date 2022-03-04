@@ -186,12 +186,6 @@ function MainPage() {
           <h2 className="catalog__title visually-hidden">Catalog</h2>
           <GenreList films={films} selectedGenre={genre} />
           <ListFilms films={films} genre={genre} />
-
-          <div className="catalog__more">
-            <button className="catalog__button" type="button">
-              Show more
-            </button>
-          </div>
         </section>
 
         <footer className="page-footer">
