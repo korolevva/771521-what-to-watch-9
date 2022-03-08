@@ -35,10 +35,10 @@ function ListFilms({ films, genre }: Props) {
           <SmallFilmCard
             key={film.id}
             name={film.name}
-            posterImage={film.posterImage}
+            posterImage={film.previewImage}
             id={film.id}
             onActiveFilmsSet={setActiveFilm}
-            videoLink={film.videoLink}
+            videoLink={film.previewVideoLink}
           />
         ))}
       </div>
