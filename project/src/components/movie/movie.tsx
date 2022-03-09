@@ -1,17 +1,31 @@
 import { Link, Route, Routes, useParams } from 'react-router-dom';
 import { AppRoute } from '../../types/const';
 import Logo from '../logo/logo';
-import { films } from '../mocks/films';
 import SimilarFilms from '../similar-films/similar-films';
 import Tabs from '../tabs/tabs';
 import MoviePageDetails from './movie-page-details';
 import MoviePageOverview from './movie-page-overview';
 import MoviePageReviews from './movie-page-reviews';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { loadFilmsAction } from '../../store/api-actions';
+import { useEffect } from 'react';
+import Spinner from '../spinner/spinner';
 
 function Movie() {
+  const dispatch = useAppDispatch();
+  const { films, isDataLoaded } = useAppSelector((state) => state);
+  useEffect(() => {
+    if (films.length === 0) {
+      dispatch(loadFilmsAction());
+    }
+  }, [dispatch, films.length]);
   const { id } = useParams();
   const film =
     films.find((currentFilm) => currentFilm.id === Number(id)) || films[0];
+
+  if (films.length === 0 || isDataLoaded) {
+    return <Spinner />;
+  }
 
   return (
     <>
@@ -110,7 +124,7 @@ function Movie() {
       <section className="film-card film-card--full">
         <div className="film-card__hero">
           <div className="film-card__bg">
-            <img src={film.posterImage} alt={film.name} />
+            <img src={film.backgroundImage} alt={film.name} />
           </div>
 
           <h1 className="visually-hidden">WTW</h1>
@@ -205,7 +219,11 @@ function Movie() {
       </section>
 
       <div className="page-content">
-        <SimilarFilms genre={film.genre} currentFilmId={film.id} />
+        <SimilarFilms
+          films={films}
+          genre={film.genre}
+          currentFilmId={film.id}
+        />
 
         <footer className="page-footer">
           <div className="logo">

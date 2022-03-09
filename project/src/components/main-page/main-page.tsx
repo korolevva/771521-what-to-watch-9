@@ -1,7 +1,7 @@
-import { useEffect } from 'react';
+// import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../hooks';
-import { loadFilmsAction } from '../../store/api-actions';
+import { useAppSelector } from '../../hooks';
+// import { loadFilmsAction } from '../../store/api-actions';
 import { AppRoute } from '../../types/const';
 import GenreList from '../genre-list/genre-list';
 import ListFilms from '../list-films/list-films';
@@ -10,10 +10,10 @@ import Spinner from '../spinner/spinner';
 
 function MainPage() {
   const { films, genre, isDataLoaded } = useAppSelector((state) => state);
-  const dispatch = useAppDispatch();
-  useEffect(() => {
-    dispatch(loadFilmsAction());
-  }, [dispatch]);
+  // const dispatch = useAppDispatch();
+  // useEffect(() => {
+  //   dispatch(loadFilmsAction());
+  // }, [dispatch]);
 
   if (isDataLoaded) {
     return <Spinner />;
