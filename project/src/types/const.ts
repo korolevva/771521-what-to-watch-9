@@ -29,3 +29,7 @@ export enum Genres {
   Horror = 'Horror',
   Western = 'Western',
 }
+
+export enum APIRoute {
+  Films = '/films',
+}

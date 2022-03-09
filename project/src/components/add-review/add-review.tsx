@@ -1,12 +1,26 @@
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { loadFilmsAction } from '../../store/api-actions';
 import Logo from '../logo/logo';
-import { films } from '../mocks/films';
+import Spinner from '../spinner/spinner';
 import AddReviewForm from './add-review-form';
 
 function AddReview() {
+  const dispatch = useAppDispatch();
+  const { films, isDataLoaded } = useAppSelector((state) => state);
+  useEffect(() => {
+    if (films.length === 0) {
+      dispatch(loadFilmsAction());
+    }
+  }, [dispatch, films.length]);
   const { id } = useParams();
   const film =
     films.find((currentFilm) => currentFilm.id === Number(id)) || films[0];
+
+  if (films.length === 0 || isDataLoaded) {
+    return <Spinner />;
+  }
   return (
     <>
       <div className="visually-hidden">

@@ -1,14 +1,15 @@
 import { useState } from 'react';
-import { films } from '../mocks/films';
 import SmallFilmCard from '../small-film-card/small-film-card';
 import classNames from 'classnames';
+import { Film } from '../../types/film';
 
 type Props = {
   genre: string;
   currentFilmId: number;
+  films: Film[];
 };
 
-function SimilarFilms({ genre, currentFilmId }: Props) {
+function SimilarFilms({ genre, currentFilmId, films }: Props) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [activeFilm, setActiveFilm] = useState(0);
   const filmsByGenre = films

@@ -1,11 +1,24 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { films } from '../components/mocks/films';
 import { Genres } from '../types/const';
-import { changeGenre, getFilmsByGenre } from './action';
+import { Film } from '../types/film';
+import {
+  changeGenre,
+  getFilmsByGenre,
+  loadFilmsSucces,
+  // eslint-disable-next-line comma-dangle
+  loadFilmsRequest,
+} from './action';
 
-const initialState = {
+type InitalState = {
+  genre: string;
+  films: Film[];
+  isDataLoaded: boolean;
+};
+
+const initialState: InitalState = {
   genre: Genres.AllGenres.toString(),
-  films: films,
+  films: [],
+  isDataLoaded: false,
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -16,7 +29,14 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(getFilmsByGenre, (state, action) => {
       const { genre } = action.payload;
-      state.films = films.filter((film) => film.genre === genre);
+      state.films = state.films.filter((film) => film.genre === genre);
+    })
+    .addCase(loadFilmsSucces, (state, action) => {
+      state.films = action.payload;
+      state.isDataLoaded = false;
+    })
+    .addCase(loadFilmsRequest, (state, action) => {
+      state.isDataLoaded = true;
     });
 });
 

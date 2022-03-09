@@ -8,8 +8,16 @@ import PrivateRoute from '../private-route/private-route';
 import Player from '../player/player';
 import SignIn from '../sign-in/sign-in';
 import Movie from '../movie/movie';
+import { loadFilmsAction } from '../../store/api-actions';
+import { useEffect } from 'react';
+import { useAppDispatch } from '../../hooks';
 
 function App() {
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(loadFilmsAction());
+  }, [dispatch]);
+
   return (
     <Routes>
       <Route path={AppRoute.Main} element={<MainPage />} />
