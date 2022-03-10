@@ -1,5 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
-import { AppRoute, AuthorizationStatus } from '../../types/const';
+import { AppRoute } from '../../types/const';
 import AddReview from '../add-review/add-review';
 import MainPage from '../main-page/main-page';
 import MyList from '../my-list/my-list';
@@ -8,9 +8,12 @@ import PrivateRoute from '../private-route/private-route';
 import Player from '../player/player';
 import SignIn from '../sign-in/sign-in';
 import Movie from '../movie/movie';
-import { loadFilmsAction } from '../../store/api-actions';
+import { checkAuthAction, loadFilmsAction } from '../../store/api-actions';
 import { useEffect } from 'react';
 import { useAppDispatch } from '../../hooks';
+import { store } from '../../store';
+
+store.dispatch(checkAuthAction());
 
 function App() {
   const dispatch = useAppDispatch();
@@ -25,7 +28,7 @@ function App() {
       <Route
         path={AppRoute.MyList}
         element={
-          <PrivateRoute authorizationStatus={AuthorizationStatus.NoAuth}>
+          <PrivateRoute>
             <MyList />
           </PrivateRoute>
         }
@@ -35,7 +38,7 @@ function App() {
         <Route
           path=":id/review"
           element={
-            <PrivateRoute authorizationStatus={AuthorizationStatus.Auth}>
+            <PrivateRoute>
               <AddReview />
             </PrivateRoute>
           }
