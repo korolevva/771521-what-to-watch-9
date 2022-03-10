@@ -1,3 +1,4 @@
+import { AuthorizationStatus } from './../types/const';
 import { createReducer } from '@reduxjs/toolkit';
 import { Genres } from '../types/const';
 import { Film } from '../types/film';
@@ -5,20 +6,23 @@ import {
   changeGenre,
   getFilmsByGenre,
   loadFilmsSucces,
-  // eslint-disable-next-line comma-dangle
   loadFilmsRequest,
+  // eslint-disable-next-line comma-dangle
+  requireAuthorization,
 } from './action';
 
 type InitalState = {
   genre: string;
   films: Film[];
   isDataLoaded: boolean;
+  authorizationStatus: AuthorizationStatus;
 };
 
 const initialState: InitalState = {
   genre: Genres.AllGenres.toString(),
   films: [],
   isDataLoaded: false,
+  authorizationStatus: AuthorizationStatus.Unknown,
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -37,6 +41,9 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(loadFilmsRequest, (state, action) => {
       state.isDataLoaded = true;
+    })
+    .addCase(requireAuthorization, (state, action) => {
+      state.authorizationStatus = action.payload;
     });
 });
 

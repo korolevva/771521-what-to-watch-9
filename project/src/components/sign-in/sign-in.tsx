@@ -1,6 +1,31 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAppDispatch } from '../../hooks';
+import { loginAction } from '../../store/api-actions';
+import { AppRoute } from '../../types/const';
 import Logo from '../logo/logo';
 
 function SignIn() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleLoginChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(evt.target.value);
+  };
+
+  const handlePassowrdChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(evt.target.value);
+  };
+
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const handleButtonClick = (evt: React.MouseEvent<HTMLElement>) => {
+    evt.preventDefault();
+    dispatch(loginAction({ email, password }));
+    navigate(AppRoute.Main);
+  };
+
   return (
     <>
       <div className="visually-hidden">
@@ -99,6 +124,8 @@ function SignIn() {
             <div className="sign-in__fields">
               <div className="sign-in__field">
                 <input
+                  onChange={handleLoginChange}
+                  value={email}
                   className="sign-in__input"
                   type="email"
                   placeholder="Email address"
@@ -114,6 +141,8 @@ function SignIn() {
               </div>
               <div className="sign-in__field">
                 <input
+                  onChange={handlePassowrdChange}
+                  value={password}
                   className="sign-in__input"
                   type="password"
                   placeholder="Password"
@@ -129,9 +158,15 @@ function SignIn() {
               </div>
             </div>
             <div className="sign-in__submit">
-              <button className="sign-in__btn" type="submit">
-                Sign in
-              </button>
+              {email.length !== 0 && password.length !== 0 && (
+                <button
+                  onClick={handleButtonClick}
+                  className="sign-in__btn"
+                  type="submit"
+                >
+                  Sign in
+                </button>
+              )}
             </div>
           </form>
         </div>

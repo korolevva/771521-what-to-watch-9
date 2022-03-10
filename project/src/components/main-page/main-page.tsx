@@ -1,23 +1,29 @@
 // import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { logoutAction } from '../../store/api-actions';
 // import { loadFilmsAction } from '../../store/api-actions';
-import { AppRoute } from '../../types/const';
+import { AppRoute, AuthorizationStatus } from '../../types/const';
 import GenreList from '../genre-list/genre-list';
 import ListFilms from '../list-films/list-films';
 import Logo from '../logo/logo';
 import Spinner from '../spinner/spinner';
 
 function MainPage() {
-  const { films, genre, isDataLoaded } = useAppSelector((state) => state);
-  // const dispatch = useAppDispatch();
-  // useEffect(() => {
-  //   dispatch(loadFilmsAction());
-  // }, [dispatch]);
+  const { films, genre, isDataLoaded, authorizationStatus } = useAppSelector(
+    (state) => state,
+  );
+  const dispatch = useAppDispatch();
 
   if (isDataLoaded) {
     return <Spinner />;
   }
+
+  const handleSignoutClick = (evt: React.MouseEvent<HTMLElement>) => {
+    evt.preventDefault();
+    dispatch(logoutAction());
+  };
+
   return (
     <>
       <div className="visually-hidden">
@@ -137,9 +143,15 @@ function MainPage() {
               </div>
             </li>
             <li className="user-block__item">
-              <Link to={AppRoute.SignIn} className="user-block__link">
-                Sign out
-              </Link>
+              {authorizationStatus === AuthorizationStatus.Auth ? (
+                <a className="user-block__link" onClick={handleSignoutClick}>
+                  Sign out
+                </a>
+              ) : (
+                <Link to={AppRoute.SignIn} className="user-block__link">
+                  Sign in
+                </Link>
+              )}
             </li>
           </ul>
         </header>
