@@ -34,10 +34,20 @@ export enum APIRoute {
   Films = '/films',
   Login = '/login',
   Logout = '/logout',
+  Comments = '/comments',
 }
 
 export enum HTTP_CODE {
   BAD_REQUEST = 400,
   UNAUTHORIZED = 401,
   NOT_FOUND = 404,
+}
+
+export enum NameSpace {
+  data = 'DATA',
+  films = 'FILMS',
+  user = 'USER',
+  film = 'FILM',
+  comments = 'COMMENTS',
+  sendingComment = 'SENDING_COMMENT',
 }

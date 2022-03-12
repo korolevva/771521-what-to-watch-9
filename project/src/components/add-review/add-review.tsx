@@ -8,7 +8,7 @@ import AddReviewForm from './add-review-form';
 
 function AddReview() {
   const dispatch = useAppDispatch();
-  const { films, isDataLoaded } = useAppSelector((state) => state);
+  const { films, isDataLoaded } = useAppSelector(({ FILMS }) => FILMS);
   useEffect(() => {
     if (films.length === 0) {
       dispatch(loadFilmsAction());
@@ -110,7 +110,7 @@ function AddReview() {
       <section className="film-card film-card--full">
         <div className="film-card__header">
           <div className="film-card__bg">
-            <img src={film.posterImage} alt="The Grand Budapest Hotel" />
+            <img src={film.backgroundImage} alt="The Grand Budapest Hotel" />
           </div>
 
           <h1 className="visually-hidden">WTW</h1>
@@ -150,7 +150,7 @@ function AddReview() {
 
           <div className="film-card__poster film-card__poster--small">
             <img
-              src={film.previewImage}
+              src={film.posterImage}
               alt="The Grand Budapest Hotel poster"
               width="218"
               height="327"

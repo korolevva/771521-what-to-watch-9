@@ -6,7 +6,7 @@ import Spinner from '../spinner/spinner';
 
 function Player() {
   const dispatch = useAppDispatch();
-  const { films, isDataLoaded } = useAppSelector((state) => state);
+  const { films, isDataLoaded } = useAppSelector(({ FILMS }) => FILMS);
   useEffect(() => {
     if (films.length === 0) {
       dispatch(loadFilmsAction());

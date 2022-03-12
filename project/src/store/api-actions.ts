@@ -1,9 +1,3 @@
-import {
-  loadFilmsSucces,
-  loadFilmsRequest,
-  // eslint-disable-next-line comma-dangle
-  requireAuthorization,
-} from './action';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { api, store } from '.';
 import { APIRoute, AuthorizationStatus } from '../types/const';
@@ -12,12 +6,43 @@ import { AuthData } from '../types/auth-data';
 import { UserData } from '../types/user-data';
 import { dropToken, saveToken } from '../services/token';
 import errorHandle from '../services/error-handle';
+import {
+  loadFilmsRequest,
+  // eslint-disable-next-line comma-dangle
+  loadFilmsSuccess,
+} from './films-process/films-process';
+import { requireAuthorization } from './user-process/user-process';
+import {
+  loadFilmByIdError,
+  loadFilmByIdRequest,
+  // eslint-disable-next-line comma-dangle
+  loadFilmByIdSuccess,
+} from './film-process/film-process';
+import {
+  loadSimilarFilmsRequest,
+  // eslint-disable-next-line comma-dangle
+  loadSimilarFilmsSuccess,
+} from './similar-films-process/similar-films-process';
+import {
+  loadCommentsError,
+  loadCommentsRequest,
+  // eslint-disable-next-line comma-dangle
+  loadCommentsSuccess,
+} from './comments-process/comments-process';
+import { SendingCommentData } from '../types/sending-comment-data';
+import {
+  sendCommentError,
+  sendCommentRequest,
+  // eslint-disable-next-line comma-dangle
+  sendCommentSuccess,
+} from './sending-comment-process/sending-comment-process';
+import { toast } from 'react-toastify';
 
 export const loadFilmsAction = createAsyncThunk('data/loadFilms', async () => {
   try {
     store.dispatch(loadFilmsRequest());
     const { data } = await api.get<Film[]>(APIRoute.Films);
-    store.dispatch(loadFilmsSucces(data));
+    store.dispatch(loadFilmsSuccess(data));
   } catch (error) {
     errorHandle(error);
   }
@@ -61,3 +86,78 @@ export const logoutAction = createAsyncThunk('user/logout', async () => {
     errorHandle(error);
   }
 });
+
+export const loadFilmByIdAction = createAsyncThunk(
+  'data/loadFilmById',
+  async (id: string) => {
+    try {
+      store.dispatch(loadFilmByIdRequest());
+      const { data } = await api.get<Film>(`${APIRoute.Films}/${id}`);
+      store.dispatch(loadFilmByIdSuccess(data));
+    } catch (error) {
+      store.dispatch(loadFilmByIdError());
+
+      errorHandle(error);
+    }
+  },
+);
+
+export const loadSimilarFilmsAction = createAsyncThunk(
+  'data/loadSimilarFilms',
+  async (id: string) => {
+    try {
+      store.dispatch(loadSimilarFilmsRequest());
+      const { data } = await api.get<Film[]>(`${APIRoute.Films}/${id}/similar`);
+      store.dispatch(loadSimilarFilmsSuccess(data));
+    } catch (error) {
+      errorHandle(error);
+    }
+  },
+);
+
+export const loadCommentsAction = createAsyncThunk(
+  'data/loadCommentsFilms',
+  async (id: string) => {
+    try {
+      store.dispatch(loadCommentsRequest());
+      const { data } = await api.get<Comment[]>(`${APIRoute.Comments}/${id}`);
+
+      store.dispatch(loadCommentsSuccess(data));
+    } catch (error) {
+      store.dispatch(loadCommentsError());
+      errorHandle(error);
+    }
+  },
+);
+
+export const sendCommentAction = createAsyncThunk(
+  'data/sendComment',
+  async ({
+    reviewMessage,
+    rating,
+    id,
+  }: {
+    reviewMessage: string;
+    rating: string;
+    id: string;
+  }) => {
+    try {
+      store.dispatch(sendCommentRequest());
+      await toast.promise(
+        api.post<SendingCommentData>(`${APIRoute.Comments}/${id}`, {
+          comment: reviewMessage,
+          rating,
+        }),
+        {
+          pending: 'Review is sending',
+          success: 'Review sent 👌',
+          error: 'Send error 🤯',
+        },
+      );
+      store.dispatch(sendCommentSuccess());
+    } catch (error) {
+      store.dispatch(sendCommentError());
+      errorHandle(error);
+    }
+  },
+);
