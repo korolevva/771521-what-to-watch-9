@@ -2,20 +2,13 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../hooks';
 import { loginAction } from '../../store/api-actions';
-import { AppRoute } from '../../types/const';
 import Logo from '../logo/logo';
 
 function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
-  const handleLoginChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(evt.target.value);
-  };
-
-  const handlePassowrdChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(evt.target.value);
-  };
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -23,8 +16,35 @@ function SignIn() {
   const handleButtonClick = (evt: React.MouseEvent<HTMLElement>) => {
     evt.preventDefault();
     dispatch(loginAction({ email, password }));
-    navigate(AppRoute.Main);
+    navigate(-1);
   };
+
+  const handleLoginChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(evt.target.value);
+    const re =
+      // eslint-disable-next-line no-useless-escape
+      /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+    if (!re.test(String(evt.target.value).toLowerCase())) {
+      setEmailError('Incorrect email');
+    } else {
+      setEmailError('');
+    }
+  };
+
+  const handlePasswordChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(evt.target.value);
+    const re =
+      // eslint-disable-next-line no-useless-escape
+      /^.*(?=.{2,})(?=.*\d)(?=.*[a-zA-Z]).*$/i;
+    if (!re.test(String(evt.target.value).toLowerCase())) {
+      setPasswordError('Incorrect password');
+    } else {
+      setPasswordError('');
+    }
+  };
+
+  const isValidForm =
+    emailError || passwordError || email.length === 0 || password.length === 0;
 
   return (
     <>
@@ -123,6 +143,9 @@ function SignIn() {
           <form action="#" className="sign-in__form">
             <div className="sign-in__fields">
               <div className="sign-in__field">
+                {emailError && email.length > 0 && (
+                  <div style={{ color: 'red' }}>{emailError}</div>
+                )}
                 <input
                   onChange={handleLoginChange}
                   value={email}
@@ -140,8 +163,11 @@ function SignIn() {
                 </label>
               </div>
               <div className="sign-in__field">
+                {passwordError && password.length > 0 && (
+                  <div style={{ color: 'red' }}>{passwordError}</div>
+                )}
                 <input
-                  onChange={handlePassowrdChange}
+                  onChange={handlePasswordChange}
                   value={password}
                   className="sign-in__input"
                   type="password"
@@ -158,15 +184,17 @@ function SignIn() {
               </div>
             </div>
             <div className="sign-in__submit">
-              {email.length !== 0 && password.length !== 0 && (
-                <button
-                  onClick={handleButtonClick}
-                  className="sign-in__btn"
-                  type="submit"
-                >
-                  Sign in
-                </button>
-              )}
+              <button
+                style={{
+                  opacity: isValidForm ? '0.3' : '1',
+                  pointerEvents: isValidForm ? 'none' : 'auto',
+                }}
+                onClick={handleButtonClick}
+                className="sign-in__btn"
+                type="submit"
+              >
+                Sign in
+              </button>
             </div>
           </form>
         </div>

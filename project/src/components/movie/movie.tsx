@@ -1,5 +1,5 @@
 import { Link, Route, Routes, useParams } from 'react-router-dom';
-import { AppRoute } from '../../types/const';
+import { AppRoute, AuthorizationStatus } from '../../types/const';
 import Logo from '../logo/logo';
 import SimilarFilms from '../similar-films/similar-films';
 import Tabs from '../tabs/tabs';
@@ -7,25 +7,35 @@ import MoviePageDetails from './movie-page-details';
 import MoviePageOverview from './movie-page-overview';
 import MoviePageReviews from './movie-page-reviews';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { loadFilmsAction } from '../../store/api-actions';
+import { loadFilmByIdAction, logoutAction } from '../../store/api-actions';
 import { useEffect } from 'react';
 import Spinner from '../spinner/spinner';
+import NotFoundPage from '../not-found-page/not-found-page';
 
 function Movie() {
   const dispatch = useAppDispatch();
-  const { films, isDataLoaded } = useAppSelector((state) => state);
-  useEffect(() => {
-    if (films.length === 0) {
-      dispatch(loadFilmsAction());
-    }
-  }, [dispatch, films.length]);
+  const { film, isFetching } = useAppSelector(({ FILM }) => FILM);
+  const { authorizationStatus } = useAppSelector(({ USER }) => USER);
   const { id } = useParams();
-  const film =
-    films.find((currentFilm) => currentFilm.id === Number(id)) || films[0];
 
-  if (films.length === 0 || isDataLoaded) {
+  useEffect(() => {
+    if (id) {
+      dispatch(loadFilmByIdAction(id));
+    }
+  }, [dispatch, id]);
+
+  if (!film) {
+    return <NotFoundPage />;
+  }
+
+  if (isFetching) {
     return <Spinner />;
   }
+
+  const handleSignoutClick = (evt: React.MouseEvent<HTMLElement>) => {
+    evt.preventDefault();
+    dispatch(logoutAction());
+  };
 
   return (
     <>
@@ -144,8 +154,19 @@ function Movie() {
                 </div>
               </li>
               <li className="user-block__item">
-                <a className="user-block__link">Sign out</a>
+                {authorizationStatus === AuthorizationStatus.Auth ? (
+                  <a className="user-block__link" onClick={handleSignoutClick}>
+                    Sign out
+                  </a>
+                ) : (
+                  <Link to={AppRoute.SignIn} className="user-block__link">
+                    Sign in
+                  </Link>
+                )}
               </li>
+              {/* <li className="user-block__item">
+                <a className="user-block__link">Sign out</a>
+              </li> */}
             </ul>
           </header>
 
@@ -178,12 +199,14 @@ function Movie() {
                   </svg>
                   <span>My list</span>
                 </button>
-                <Link
-                  to={`${AppRoute.Film}/${id}${AppRoute.Review}`}
-                  className="btn film-card__button"
-                >
-                  Add review
-                </Link>
+                {authorizationStatus === AuthorizationStatus.Auth ? (
+                  <Link
+                    to={`${AppRoute.Film}/${id}${AppRoute.Review}`}
+                    className="btn film-card__button"
+                  >
+                    Add review
+                  </Link>
+                ) : null}
               </div>
             </div>
           </div>
@@ -203,6 +226,7 @@ function Movie() {
             <div className="film-card__desc">
               <Tabs />
               <Routes>
+                <Route index element={<MoviePageOverview film={film} />} />
                 <Route
                   path="/overview"
                   element={<MoviePageOverview film={film} />}
@@ -219,11 +243,7 @@ function Movie() {
       </section>
 
       <div className="page-content">
-        <SimilarFilms
-          films={films}
-          genre={film.genre}
-          currentFilmId={film.id}
-        />
+        <SimilarFilms genre={film.genre} currentFilmId={film.id} />
 
         <footer className="page-footer">
           <div className="logo">

@@ -10,9 +10,8 @@ import Logo from '../logo/logo';
 import Spinner from '../spinner/spinner';
 
 function MainPage() {
-  const { films, genre, isDataLoaded, authorizationStatus } = useAppSelector(
-    (state) => state,
-  );
+  const { films, genre, isDataLoaded } = useAppSelector(({ FILMS }) => FILMS);
+  const { authorizationStatus } = useAppSelector(({ USER }) => USER);
   const dispatch = useAppDispatch();
 
   if (isDataLoaded) {

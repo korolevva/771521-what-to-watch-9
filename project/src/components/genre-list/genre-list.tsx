@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { useAppDispatch } from '../../hooks';
-import { changeGenre } from '../../store/action';
+import { changeGenre } from '../../store/films-process/films-process';
 import { Genres } from '../../types/const';
 import { Film } from '../../types/film';
 

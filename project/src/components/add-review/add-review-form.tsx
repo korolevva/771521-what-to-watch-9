@@ -1,18 +1,54 @@
 import { useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { sendCommentAction } from '../../store/api-actions';
+import { AppRoute } from '../../types/const';
 
 function AddReviewForm() {
   const [reviewMessage, setReviewMessage] = useState('');
+  const [rating, setRating] = useState('');
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const { isFetching } = useAppSelector(
+    ({ SENDING_COMMENT }) => SENDING_COMMENT,
+  );
 
-  const fieldChangeHandle = (evt: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleReviewChange = (evt: React.ChangeEvent<HTMLTextAreaElement>) => {
     const { value } = evt.target;
     setReviewMessage(value);
   };
+
+  const handleRatingChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
+    setRating(evt.target.value);
+  };
+
+  const handleButtonClick = (evt: React.MouseEvent<HTMLElement>) => {
+    evt.preventDefault();
+    if (id) {
+      dispatch(sendCommentAction({ reviewMessage, rating, id }));
+      navigate(`${AppRoute.Film}/${id}`);
+    }
+  };
+
+  const isMessageEntered =
+    reviewMessage.length >= 50 && reviewMessage.length <= 400;
+
+  const isRatingSelected = rating.length !== 0;
+
+  const isValidForm = isMessageEntered && isRatingSelected;
 
   return (
     <div className="add-review">
       <form action="#" className="add-review__form">
         <div className="rating">
-          <div className="rating__stars">
+          <div
+            style={{
+              pointerEvents: isFetching ? 'none' : 'auto',
+            }}
+            className="rating__stars"
+            onChange={handleRatingChange}
+          >
             <input
               className="rating__input"
               id="star-10"
@@ -41,7 +77,6 @@ function AddReviewForm() {
               type="radio"
               name="rating"
               value="8"
-              checked
             />
             <label className="rating__label" htmlFor="star-8">
               Rating 8
@@ -128,15 +163,28 @@ function AddReviewForm() {
 
         <div className="add-review__text">
           <textarea
-            onChange={fieldChangeHandle}
+            style={{
+              pointerEvents: isFetching ? 'none' : 'auto',
+            }}
+            onChange={handleReviewChange}
             className="add-review__textarea"
             name="review-text"
             id="review-text"
             placeholder="Review text"
             value={reviewMessage}
+            maxLength={400}
+            minLength={50}
           />
           <div className="add-review__submit">
-            <button className="add-review__btn" type="submit">
+            <button
+              style={{
+                opacity: isValidForm ? '1' : '0.3',
+                pointerEvents: isValidForm && !isFetching ? 'auto' : 'none',
+              }}
+              onClick={handleButtonClick}
+              className="add-review__btn"
+              type="submit"
+            >
               Post
             </button>
           </div>

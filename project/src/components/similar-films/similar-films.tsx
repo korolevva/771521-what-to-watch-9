@@ -1,17 +1,26 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import SmallFilmCard from '../small-film-card/small-film-card';
 import classNames from 'classnames';
-import { Film } from '../../types/film';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { loadSimilarFilmsAction } from '../../store/api-actions';
 
 type Props = {
   genre: string;
   currentFilmId: number;
-  films: Film[];
 };
 
-function SimilarFilms({ genre, currentFilmId, films }: Props) {
+function SimilarFilms({ genre, currentFilmId }: Props) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [activeFilm, setActiveFilm] = useState(0);
+  const { films } = useAppSelector(({ FILMS }) => FILMS);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (films.length === 0) {
+      dispatch(loadSimilarFilmsAction(String(currentFilmId)));
+    }
+  }, [dispatch, films.length, currentFilmId]);
+
   const filmsByGenre = films
     .filter((film) => film.genre === genre && film.id !== currentFilmId)
     .slice(0, 4)
@@ -19,10 +28,10 @@ function SimilarFilms({ genre, currentFilmId, films }: Props) {
       <SmallFilmCard
         key={film.id}
         name={film.name}
-        posterImage={film.posterImage}
+        posterImage={film.previewImage}
         id={film.id}
         onActiveFilmsSet={setActiveFilm}
-        videoLink={film.videoLink}
+        videoLink={film.previewVideoLink}
       />
     ));
 
