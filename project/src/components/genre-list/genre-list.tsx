@@ -1,15 +1,10 @@
 import classNames from 'classnames';
-import { useAppDispatch } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { changeGenre } from '../../store/films-process/films-process';
 import { Genres } from '../../types/const';
-import { Film } from '../../types/film';
 
-type Props = {
-  films: Film[];
-  selectedGenre: string;
-};
-
-function GenreList({ films, selectedGenre }: Props) {
+function GenreList() {
+  const { films, genre: selectedGenre } = useAppSelector(({ FILMS }) => FILMS);
   const dispatch = useAppDispatch();
   const genres = films.map((film) => film.genre);
   const uniqueGenres = [Genres.AllGenres, ...Array.from(new Set(genres))].map(

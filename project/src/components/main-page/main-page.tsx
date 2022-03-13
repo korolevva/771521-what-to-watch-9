@@ -1,22 +1,14 @@
-// import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { logoutAction } from '../../store/api-actions';
-// import { loadFilmsAction } from '../../store/api-actions';
 import { AppRoute, AuthorizationStatus } from '../../types/const';
-import GenreList from '../genre-list/genre-list';
-import ListFilms from '../list-films/list-films';
+import FilmsCatalog from '../films-catalog/films-catalog';
+import Footer from '../footer/footer';
 import Logo from '../logo/logo';
-import Spinner from '../spinner/spinner';
 
 function MainPage() {
-  const { films, genre, isDataLoaded } = useAppSelector(({ FILMS }) => FILMS);
   const { authorizationStatus } = useAppSelector(({ USER }) => USER);
   const dispatch = useAppDispatch();
-
-  if (isDataLoaded) {
-    return <Spinner />;
-  }
 
   const handleSignoutClick = (evt: React.MouseEvent<HTMLElement>) => {
     evt.preventDefault();
@@ -155,7 +147,8 @@ function MainPage() {
           </ul>
         </header>
 
-        <div className="film-card__wrap">
+        {/* TODO: реализовать загрузку ПРОМО фильма в ветке module8-task2 */}
+        {/* <div className="film-card__wrap">
           <div className="film-card__info">
             <div className="film-card__poster">
               <img
@@ -202,29 +195,12 @@ function MainPage() {
               </div>
             )}
           </div>
-        </div>
+        </div> */}
       </section>
 
       <div className="page-content">
-        <section className="catalog">
-          <h2 className="catalog__title visually-hidden">Catalog</h2>
-          <GenreList films={films} selectedGenre={genre} />
-          <ListFilms films={films} genre={genre} />
-        </section>
-
-        <footer className="page-footer">
-          <div className="logo">
-            <a className="logo__link logo__link--light">
-              <span className="logo__letter logo__letter--1">W</span>
-              <span className="logo__letter logo__letter--2">T</span>
-              <span className="logo__letter logo__letter--3">W</span>
-            </a>
-          </div>
-
-          <div className="copyright">
-            <p>© 2019 What to watch Ltd.</p>
-          </div>
-        </footer>
+        <FilmsCatalog />
+        <Footer />
       </div>
     </>
   );

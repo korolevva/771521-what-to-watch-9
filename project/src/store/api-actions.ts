@@ -95,7 +95,7 @@ export const loadFilmByIdAction = createAsyncThunk(
       const { data } = await api.get<Film>(`${APIRoute.Films}/${id}`);
       store.dispatch(loadFilmByIdSuccess(data));
     } catch (error) {
-      store.dispatch(loadFilmByIdError());
+      store.dispatch(loadFilmByIdError(error));
 
       errorHandle(error);
     }

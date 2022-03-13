@@ -16,6 +16,7 @@ export type FilmsData = {
 export type FilmData = {
   film: Film | null;
   isFetching: boolean;
+  error: Error | null;
 };
 
 export type SimilarFilmsData = {
