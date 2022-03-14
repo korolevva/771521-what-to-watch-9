@@ -5,6 +5,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState: FilmData = {
   film: null,
   isFetching: false,
+  error: null,
 };
 
 export const filmData = createSlice({
@@ -18,8 +19,9 @@ export const filmData = createSlice({
       state.film = action.payload;
       state.isFetching = false;
     },
-    loadFilmByIdError: (state) => {
+    loadFilmByIdError: (state, action) => {
       state.isFetching = false;
+      state.error = action.payload;
     },
   },
 });

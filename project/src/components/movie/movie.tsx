@@ -14,7 +14,7 @@ import NotFoundPage from '../not-found-page/not-found-page';
 
 function Movie() {
   const dispatch = useAppDispatch();
-  const { film, isFetching } = useAppSelector(({ FILM }) => FILM);
+  const { film, isFetching, error } = useAppSelector(({ FILM }) => FILM);
   const { authorizationStatus } = useAppSelector(({ USER }) => USER);
   const { id } = useParams();
 
@@ -24,11 +24,11 @@ function Movie() {
     }
   }, [dispatch, id]);
 
-  if (!film) {
+  if (error) {
     return <NotFoundPage />;
   }
 
-  if (isFetching) {
+  if (isFetching || !film) {
     return <Spinner />;
   }
 
@@ -164,9 +164,6 @@ function Movie() {
                   </Link>
                 )}
               </li>
-              {/* <li className="user-block__item">
-                <a className="user-block__link">Sign out</a>
-              </li> */}
             </ul>
           </header>
 

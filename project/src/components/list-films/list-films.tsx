@@ -1,14 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { useAppSelector } from '../../hooks';
 import { Genres } from '../../types/const';
-import { Film } from '../../types/film';
 import SmallFilmCard from '../small-film-card/small-film-card';
 
-type Props = {
-  films: Film[];
-  genre: string;
-};
-
-function ListFilms({ films, genre }: Props) {
+function ListFilms() {
+  const { films, genre } = useAppSelector(({ FILMS }) => FILMS);
   const [activeFilm, setActiveFilm] = useState(0);
   const [showFilmsCount, setShowFilmsCount] = useState(8);
   useEffect(() => {
@@ -28,20 +24,24 @@ function ListFilms({ films, genre }: Props) {
     setShowFilmsCount(showFilmsCount + 8);
   };
 
+  const smallFilmCards = useMemo(
+    () =>
+      filmList.map((film) => (
+        <SmallFilmCard
+          key={film.id}
+          name={film.name}
+          posterImage={film.previewImage}
+          id={film.id}
+          onActiveFilmsSet={setActiveFilm}
+          videoLink={film.previewVideoLink}
+        />
+      )),
+    [filmList],
+  );
+
   return (
     <>
-      <div className="catalog__films-list">
-        {filmList.map((film) => (
-          <SmallFilmCard
-            key={film.id}
-            name={film.name}
-            posterImage={film.previewImage}
-            id={film.id}
-            onActiveFilmsSet={setActiveFilm}
-            videoLink={film.previewVideoLink}
-          />
-        ))}
-      </div>
+      <div className="catalog__films-list">{smallFilmCards}</div>
       {!(filtredFilmsByGenre.length - showFilmsCount < 0) && (
         <div className="catalog__more">
           <button
