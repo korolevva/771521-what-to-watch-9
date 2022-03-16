@@ -1,7 +1,43 @@
+import { useEffect, useMemo } from 'react';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { loadFavoriteFilmsAction } from '../../store/api-actions';
 import Footer from '../footer/footer';
-import Logo from '../logo/logo';
+import Header from '../header/header';
+import NotFoundPage from '../not-found-page/not-found-page';
+import SmallFilmCard from '../small-film-card/small-film-card';
+import Spinner from '../spinner/spinner';
 
 function MyList() {
+  const { films, error, isFetching } = useAppSelector(
+    ({ FAVORITE }) => FAVORITE,
+  );
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(loadFavoriteFilmsAction());
+  }, [dispatch]);
+
+  const smallFilmCards = useMemo(
+    () =>
+      films.map((film) => (
+        <SmallFilmCard
+          key={film.id}
+          name={film.name}
+          posterImage={film.previewImage}
+          id={film.id}
+          videoLink={film.previewVideoLink}
+        />
+      )),
+    [films],
+  );
+
+  if (error) {
+    return <NotFoundPage />;
+  }
+
+  if (isFetching || !films) {
+    return <Spinner />;
+  }
   return (
     <>
       <div className="visually-hidden">
@@ -89,32 +125,10 @@ function MyList() {
       </div>
 
       <div className="user-page">
-        <header className="page-header user-page__head">
-          <Logo />
-
-          <h1 className="page-title user-page__title">My list</h1>
-
-          <ul className="user-block">
-            <li className="user-block__item">
-              <div className="user-block__avatar">
-                <img
-                  src="img/avatar.jpg"
-                  alt="User avatar"
-                  width="63"
-                  height="63"
-                />
-              </div>
-            </li>
-            <li className="user-block__item">
-              <a className="user-block__link">Sign out</a>
-            </li>
-          </ul>
-        </header>
-
+        <Header />
         <section className="catalog">
           <h2 className="catalog__title visually-hidden">Catalog</h2>
-          {/* TODO: реализовать компонент понравившихся фильмов */}
-          {/* <ListFilms films={films} /> */}
+          <div className="catalog__films-list">{smallFilmCards}</div>
         </section>
 
         <Footer />

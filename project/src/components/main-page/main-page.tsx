@@ -1,20 +1,13 @@
-import { Link } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../hooks';
-import { logoutAction } from '../../store/api-actions';
-import { AppRoute, AuthorizationStatus } from '../../types/const';
+// import { Link } from 'react-router-dom';
+// import { useAppDispatch, useAppSelector } from '../../hooks';
+// import { logoutAction } from '../../store/api-actions';
+// import { AppRoute, AuthorizationStatus } from '../../types/const';
 import FilmsCatalog from '../films-catalog/films-catalog';
 import Footer from '../footer/footer';
-import Logo from '../logo/logo';
+// import Logo from '../logo/logo';
+import PromoFilm from '../promo-film/promo-film';
 
 function MainPage() {
-  const { authorizationStatus } = useAppSelector(({ USER }) => USER);
-  const dispatch = useAppDispatch();
-
-  const handleSignoutClick = (evt: React.MouseEvent<HTMLElement>) => {
-    evt.preventDefault();
-    dispatch(logoutAction());
-  };
-
   return (
     <>
       <div className="visually-hidden">
@@ -109,46 +102,10 @@ function MainPage() {
         </svg>
       </div>
 
-      <section className="film-card">
-        <div className="film-card__bg">
-          <img
-            src="img/bg-the-grand-budapest-hotel.jpg"
-            alt="The Grand Budapest Hotel"
-          />
-        </div>
+      <PromoFilm />
 
-        <h1 className="visually-hidden">WTW</h1>
-
-        <header className="page-header film-card__head">
-          <Logo />
-
-          <ul className="user-block">
-            <li className="user-block__item">
-              <div className="user-block__avatar">
-                <img
-                  src="img/avatar.jpg"
-                  alt="User avatar"
-                  width="63"
-                  height="63"
-                />
-              </div>
-            </li>
-            <li className="user-block__item">
-              {authorizationStatus === AuthorizationStatus.Auth ? (
-                <a className="user-block__link" onClick={handleSignoutClick}>
-                  Sign out
-                </a>
-              ) : (
-                <Link to={AppRoute.SignIn} className="user-block__link">
-                  Sign in
-                </Link>
-              )}
-            </li>
-          </ul>
-        </header>
-
-        {/* TODO: реализовать загрузку ПРОМО фильма в ветке module8-task2 */}
-        {/* <div className="film-card__wrap">
+      {/* TODO: реализовать загрузку ПРОМО фильма в ветке module8-task2 */}
+      {/* <div className="film-card__wrap">
           <div className="film-card__info">
             <div className="film-card__poster">
               <img
@@ -196,7 +153,7 @@ function MainPage() {
             )}
           </div>
         </div> */}
-      </section>
+      {/* </section> */}
 
       <div className="page-content">
         <FilmsCatalog />

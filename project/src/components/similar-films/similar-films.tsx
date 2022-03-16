@@ -30,7 +30,6 @@ function SimilarFilms({ genre, currentFilmId }: Props) {
         name={film.name}
         posterImage={film.previewImage}
         id={film.id}
-        onActiveFilmsSet={setActiveFilm}
         videoLink={film.previewVideoLink}
       />
     ));

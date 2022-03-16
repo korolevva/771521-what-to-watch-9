@@ -33,6 +33,18 @@ export type SendingCommentData = {
   isFetching: boolean;
 };
 
+export type PromoFilmData = {
+  film: Film | null;
+  isFetching: boolean;
+  error: Error | null;
+};
+
+export type MyFavoriteFilmsData = {
+  films: Film[];
+  isFetching: boolean;
+  error: Error | null;
+};
+
 export type State = ReturnType<typeof store.getState>;
 
 export type AppDispatch = typeof store.dispatch;

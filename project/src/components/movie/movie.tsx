@@ -1,16 +1,20 @@
 import { Link, Route, Routes, useParams } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../types/const';
-import Logo from '../logo/logo';
 import SimilarFilms from '../similar-films/similar-films';
 import Tabs from '../tabs/tabs';
 import MoviePageDetails from './movie-page-details';
 import MoviePageOverview from './movie-page-overview';
 import MoviePageReviews from './movie-page-reviews';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { loadFilmByIdAction, logoutAction } from '../../store/api-actions';
+import {
+  changeFavoriteFilmStatusAction,
+  // eslint-disable-next-line comma-dangle
+  loadFilmByIdAction,
+} from '../../store/api-actions';
 import { useEffect } from 'react';
 import Spinner from '../spinner/spinner';
 import NotFoundPage from '../not-found-page/not-found-page';
+import Header from '../header/header';
 
 function Movie() {
   const dispatch = useAppDispatch();
@@ -32,9 +36,11 @@ function Movie() {
     return <Spinner />;
   }
 
-  const handleSignoutClick = (evt: React.MouseEvent<HTMLElement>) => {
-    evt.preventDefault();
-    dispatch(logoutAction());
+  const handleFavoriteButtonClick = () => {
+    if (id) {
+      const status = film.isFavorite ? 0 : 1;
+      dispatch(changeFavoriteFilmStatusAction({ status: String(status), id }));
+    }
   };
 
   return (
@@ -139,33 +145,7 @@ function Movie() {
 
           <h1 className="visually-hidden">WTW</h1>
 
-          <header className="page-header film-card__head">
-            <Logo />
-
-            <ul className="user-block">
-              <li className="user-block__item">
-                <div className="user-block__avatar">
-                  <img
-                    src="img/avatar.jpg"
-                    alt="User avatar"
-                    width="63"
-                    height="63"
-                  />
-                </div>
-              </li>
-              <li className="user-block__item">
-                {authorizationStatus === AuthorizationStatus.Auth ? (
-                  <a className="user-block__link" onClick={handleSignoutClick}>
-                    Sign out
-                  </a>
-                ) : (
-                  <Link to={AppRoute.SignIn} className="user-block__link">
-                    Sign in
-                  </Link>
-                )}
-              </li>
-            </ul>
-          </header>
+          <Header />
 
           <div className="film-card__wrap">
             <div className="film-card__desc">
@@ -188,14 +168,22 @@ function Movie() {
                   </button>
                 </Link>
                 <button
+                  onClick={handleFavoriteButtonClick}
                   className="btn btn--list film-card__button"
                   type="button"
                 >
-                  <svg viewBox="0 0 19 20" width="19" height="20">
-                    <use xlinkHref="#add"></use>
-                  </svg>
+                  {film.isFavorite ? (
+                    <svg viewBox="0 0 18 14" width="18" height="14">
+                      <use xlinkHref="#in-list"></use>
+                    </svg>
+                  ) : (
+                    <svg viewBox="0 0 19 20" width="19" height="20">
+                      <use xlinkHref="#add"></use>
+                    </svg>
+                  )}
                   <span>My list</span>
                 </button>
+
                 {authorizationStatus === AuthorizationStatus.Auth ? (
                   <Link
                     to={`${AppRoute.Film}/${id}${AppRoute.Review}`}
