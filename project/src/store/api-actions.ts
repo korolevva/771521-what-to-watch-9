@@ -37,6 +37,21 @@ import {
   sendCommentSuccess,
 } from './sending-comment-process/sending-comment-process';
 import { toast } from 'react-toastify';
+import {
+  loadPromoFilmError,
+  loadPromoFilmRequest,
+  // eslint-disable-next-line comma-dangle
+  loadPromoFilmSuccess,
+} from './promo-film-process/promo-film-process';
+import {
+  changeFavoriteFilmError,
+  changeFavoriteFilmRequest,
+  changeFavoriteFilmSuccess,
+  loadFavoriteFilmsError,
+  loadFavoriteFilmsRequest,
+  // eslint-disable-next-line comma-dangle
+  loadFavoriteFilmsSuccess,
+} from './my-favorite-film-process/my-favorite-film-process';
 
 export const loadFilmsAction = createAsyncThunk('data/loadFilms', async () => {
   try {
@@ -157,6 +172,52 @@ export const sendCommentAction = createAsyncThunk(
       store.dispatch(sendCommentSuccess());
     } catch (error) {
       store.dispatch(sendCommentError());
+      errorHandle(error);
+    }
+  },
+);
+
+export const loadPromoFilmAction = createAsyncThunk(
+  'data/loadPromoFilm',
+  async () => {
+    try {
+      store.dispatch(loadPromoFilmRequest());
+      const { data } = await api.get<Film>(APIRoute.PromoFilm);
+      store.dispatch(loadPromoFilmSuccess(data));
+    } catch (error) {
+      store.dispatch(loadPromoFilmError(error));
+
+      errorHandle(error);
+    }
+  },
+);
+
+export const loadFavoriteFilmsAction = createAsyncThunk(
+  'data/loadFavoriteFilms',
+  async () => {
+    try {
+      store.dispatch(loadFavoriteFilmsRequest());
+      const { data } = await api.get<Film[]>(APIRoute.Favorite);
+
+      store.dispatch(loadFavoriteFilmsSuccess(data));
+    } catch (error) {
+      store.dispatch(loadFavoriteFilmsError());
+      errorHandle(error);
+    }
+  },
+);
+
+export const changeFavoriteFilmStatusAction = createAsyncThunk(
+  'data/changeFavoriteFilmStatus',
+  async ({ status, id }: { status: string; id: string }) => {
+    try {
+      store.dispatch(changeFavoriteFilmRequest());
+      await api.post<Film>(`${APIRoute.Favorite}/${id}/${status}`);
+      store.dispatch(loadFilmByIdAction(id));
+      store.dispatch(loadPromoFilmAction());
+      store.dispatch(changeFavoriteFilmSuccess());
+    } catch (error) {
+      store.dispatch(changeFavoriteFilmError());
       errorHandle(error);
     }
   },

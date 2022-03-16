@@ -7,17 +7,10 @@ type Props = {
   name: string;
   posterImage: string;
   id: number;
-  onActiveFilmsSet: React.Dispatch<React.SetStateAction<number>>;
   videoLink: string;
 };
 
-function SmallFilmCard({
-  name,
-  posterImage,
-  id,
-  onActiveFilmsSet,
-  videoLink,
-}: Props) {
+function SmallFilmCard({ name, posterImage, id, videoLink }: Props) {
   const videoRef = useRef<HTMLVideoElement>(null);
   let timer: ReturnType<typeof setTimeout>;
 

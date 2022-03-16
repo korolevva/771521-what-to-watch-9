@@ -35,6 +35,8 @@ export enum APIRoute {
   Login = '/login',
   Logout = '/logout',
   Comments = '/comments',
+  PromoFilm = '/promo',
+  Favorite = '/favorite',
 }
 
 export enum HTTP_CODE {
@@ -50,4 +52,6 @@ export enum NameSpace {
   film = 'FILM',
   comments = 'COMMENTS',
   sendingComment = 'SENDING_COMMENT',
+  promoFilm = 'PROMO',
+  favorite = 'FAVORITE',
 }

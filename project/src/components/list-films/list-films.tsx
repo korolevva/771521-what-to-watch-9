@@ -5,14 +5,11 @@ import SmallFilmCard from '../small-film-card/small-film-card';
 
 function ListFilms() {
   const { films, genre } = useAppSelector(({ FILMS }) => FILMS);
-  const [activeFilm, setActiveFilm] = useState(0);
   const [showFilmsCount, setShowFilmsCount] = useState(8);
   useEffect(() => {
     setShowFilmsCount(8);
   }, [genre]);
 
-  // eslint-disable-next-line no-console
-  console.log(activeFilm);
   const filtredFilmsByGenre =
     genre === Genres.AllGenres
       ? films
@@ -32,7 +29,6 @@ function ListFilms() {
           name={film.name}
           posterImage={film.previewImage}
           id={film.id}
-          onActiveFilmsSet={setActiveFilm}
           videoLink={film.previewVideoLink}
         />
       )),
