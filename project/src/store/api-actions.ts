@@ -1,9 +1,9 @@
+/* eslint-disable no-debugger */
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { api, store } from '.';
 import { APIRoute, AuthorizationStatus } from '../types/const';
 import { Film } from '../types/film';
 import { AuthData } from '../types/auth-data';
-import { UserData } from '../types/user-data';
 import { dropToken, saveToken } from '../services/token';
 import errorHandle from '../services/error-handle';
 import {
@@ -11,7 +11,12 @@ import {
   // eslint-disable-next-line comma-dangle
   loadFilmsSuccess,
 } from './films-process/films-process';
-import { requireAuthorization } from './user-process/user-process';
+import {
+  checkAuthorizationError,
+  checkAuthorizationRequest,
+  // eslint-disable-next-line comma-dangle
+  setUser,
+} from './auth-user-process/auth-user-process';
 import {
   loadFilmByIdError,
   loadFilmByIdRequest,
@@ -43,6 +48,8 @@ import {
   // eslint-disable-next-line comma-dangle
   loadPromoFilmSuccess,
 } from './promo-film-process/promo-film-process';
+import { User } from '../types/user';
+import { changeAuthStatus } from './change-auth-status-process/change-auth-status-process';
 import {
   changeFavoriteFilmError,
   changeFavoriteFilmRequest,
@@ -51,7 +58,7 @@ import {
   loadFavoriteFilmsRequest,
   // eslint-disable-next-line comma-dangle
   loadFavoriteFilmsSuccess,
-} from './my-favorite-film-process/my-favorite-film-process';
+} from './my-favorite-film-process.test.ts/my-favorite-film-process';
 
 export const loadFilmsAction = createAsyncThunk('data/loadFilms', async () => {
   try {
@@ -64,14 +71,13 @@ export const loadFilmsAction = createAsyncThunk('data/loadFilms', async () => {
 });
 
 export const checkAuthAction = createAsyncThunk(
-  'user/requireAuthorization',
+  'user/checkAuthorization',
   async () => {
     try {
       await api.get(APIRoute.Login);
-      store.dispatch(requireAuthorization(AuthorizationStatus.Auth));
+      store.dispatch(changeAuthStatus(AuthorizationStatus.Auth));
     } catch (error) {
       errorHandle(error);
-      store.dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
     }
   },
 );
@@ -80,25 +86,32 @@ export const loginAction = createAsyncThunk(
   'user/login',
   async ({ email, password }: AuthData) => {
     try {
-      const {
-        data: { token },
-      } = await api.post<UserData>(APIRoute.Login, { email, password });
-      saveToken(token);
-      store.dispatch(requireAuthorization(AuthorizationStatus.Auth));
+      store.dispatch(checkAuthorizationRequest());
+      const { data } = await api.post<User>(APIRoute.Login, {
+        email,
+        password,
+      });
+      saveToken(data.token);
+      store.dispatch(changeAuthStatus(AuthorizationStatus.Auth));
+      store.dispatch(setUser(data));
     } catch (error) {
       errorHandle(error);
-      store.dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
+      store.dispatch(checkAuthorizationError(error));
+      store.dispatch(changeAuthStatus(AuthorizationStatus.NoAuth));
     }
   },
 );
 
 export const logoutAction = createAsyncThunk('user/logout', async () => {
   try {
+    store.dispatch(checkAuthorizationRequest());
     await api.delete(APIRoute.Logout);
     dropToken();
-    store.dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
+    store.dispatch(changeAuthStatus(AuthorizationStatus.NoAuth));
+    store.dispatch(setUser(null));
   } catch (error) {
     errorHandle(error);
+    store.dispatch(checkAuthorizationError(error));
   }
 });
 

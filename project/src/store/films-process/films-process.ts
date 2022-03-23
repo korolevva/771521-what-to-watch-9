@@ -23,16 +23,8 @@ export const filmsData = createSlice({
       const { genre } = action.payload;
       state.genre = genre;
     },
-    getFilmsByGenre: (state, action) => {
-      const { genre } = action.payload;
-      state.films = state.films.filter((film) => film.genre === genre);
-    },
   },
 });
 
-export const {
-  loadFilmsSuccess,
-  loadFilmsRequest,
-  changeGenre,
-  getFilmsByGenre,
-} = filmsData.actions;
+export const { loadFilmsSuccess, loadFilmsRequest, changeGenre } =
+  filmsData.actions;

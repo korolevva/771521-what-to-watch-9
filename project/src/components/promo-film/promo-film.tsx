@@ -7,8 +7,11 @@ import {
   loadPromoFilmAction,
 } from '../../store/api-actions';
 import { AppRoute } from '../../types/const';
-import Header from '../header/header';
+import FilmBackgroundImage from '../film-background-image/film-background-image';
+import Logo from '../logo/logo';
+// import Header from '../header/header';
 import Spinner from '../spinner/spinner';
+import User from '../user/user';
 
 function PromoFilm() {
   const dispatch = useAppDispatch();
@@ -38,12 +41,12 @@ function PromoFilm() {
 
   return (
     <section className="film-card">
-      <div className="film-card__bg">
-        <img src={film.backgroundImage} alt={film.name} />
-      </div>
-
+      <FilmBackgroundImage film={film} />
       <h1 className="visually-hidden">WTW</h1>
-      <Header />
+      <header className="page-header film-card__head">
+        <Logo />
+        <User />
+      </header>
       <div className="film-card__wrap">
         <div className="film-card__info">
           <div className="film-card__poster">
@@ -54,14 +57,12 @@ function PromoFilm() {
               height="327"
             />
           </div>
-
           <div className="film-card__desc">
             <h2 className="film-card__title">{film.name}</h2>
             <p className="film-card__meta">
               <span className="film-card__genre">{film.genre}</span>
               <span className="film-card__year">{film.released}</span>
             </p>
-
             <div className="film-card__buttons">
               <Link to={`${AppRoute.Play}/${film.id}`}>
                 <button
@@ -71,7 +72,6 @@ function PromoFilm() {
                   <svg viewBox="0 0 19 19" width="19" height="19">
                     <use xlinkHref="#play-s"></use>
                   </svg>
-
                   <span>Play</span>
                 </button>
               </Link>

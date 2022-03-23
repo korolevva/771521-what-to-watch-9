@@ -31,15 +31,17 @@ function SmallFilmCard({ name, posterImage, id, videoLink }: Props) {
       onMouseLeave={handleMouseLeave}
       className="small-film-card catalog__films-card"
     >
-      <div className="small-film-card__image">
-        <VideoPlayer
-          poster={posterImage}
-          width="280"
-          height="175"
-          src={videoLink}
-          videoRef={videoRef}
-        />
-      </div>
+      <Link to={`${AppRoute.Film}/${id}/overview`}>
+        <div className="small-film-card__image">
+          <VideoPlayer
+            poster={posterImage}
+            width="280"
+            height="175"
+            src={videoLink}
+            videoRef={videoRef}
+          />
+        </div>
+      </Link>
       <h3 className="small-film-card__title">
         <Link
           className="small-film-card__link"

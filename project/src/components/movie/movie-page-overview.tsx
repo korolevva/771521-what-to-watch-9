@@ -32,13 +32,11 @@ function MoviePageOverview({ film }: Props) {
           </span>
         </p>
       </div>
-
       <div className="film-card__text">
         <p>{film.description}</p>
         <p className="film-card__director">
           <strong>Director:{film.director}</strong>
         </p>
-
         <p className="film-card__starring">
           <strong>Starring: {film.starring.join(', ')}</strong>
         </p>

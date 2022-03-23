@@ -10,6 +10,7 @@ function AddReviewForm() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
+
   const { isFetching } = useAppSelector(
     ({ SENDING_COMMENT }) => SENDING_COMMENT,
   );
@@ -103,7 +104,6 @@ function AddReviewForm() {
             <label className="rating__label" htmlFor="star-6">
               Rating 6
             </label>
-
             <input
               className="rating__input"
               id="star-5"
@@ -114,7 +114,6 @@ function AddReviewForm() {
             <label className="rating__label" htmlFor="star-5">
               Rating 5
             </label>
-
             <input
               className="rating__input"
               id="star-4"
@@ -125,7 +124,6 @@ function AddReviewForm() {
             <label className="rating__label" htmlFor="star-4">
               Rating 4
             </label>
-
             <input
               className="rating__input"
               id="star-3"
@@ -136,7 +134,6 @@ function AddReviewForm() {
             <label className="rating__label" htmlFor="star-3">
               Rating 3
             </label>
-
             <input
               className="rating__input"
               id="star-2"
@@ -147,7 +144,6 @@ function AddReviewForm() {
             <label className="rating__label" htmlFor="star-2">
               Rating 2
             </label>
-
             <input
               className="rating__input"
               id="star-1"
@@ -160,7 +156,6 @@ function AddReviewForm() {
             </label>
           </div>
         </div>
-
         <div className="add-review__text">
           <textarea
             style={{

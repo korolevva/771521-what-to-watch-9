@@ -2,8 +2,15 @@ import { store } from '../store/index.js';
 import { Comment } from './comment.js';
 import { AuthorizationStatus } from './const.js';
 import { Film } from './film.js';
+import { User } from './user.js';
 
-export type UserProcess = {
+export type AuthUserProcess = {
+  user: User | null;
+  error: Error | null;
+  isFetching: boolean;
+};
+
+export type ChangeAuthStatusProcess = {
   authorizationStatus: AuthorizationStatus;
 };
 
