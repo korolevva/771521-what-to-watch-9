@@ -19,12 +19,14 @@ function User() {
         {authorizationStatus === AuthorizationStatus.Auth ? (
           <Link to={AppRoute.MyList}>
             <div className="user-block__avatar">
-              <img
-                src={user?.avatarUrl}
-                alt={user?.name}
-                width="63"
-                height="63"
-              />
+              {user && (
+                <img
+                  src={user.avatarUrl}
+                  alt={user.name}
+                  width="63"
+                  height="63"
+                />
+              )}
             </div>
           </Link>
         ) : (
@@ -32,7 +34,7 @@ function User() {
         )}
       </li>
       <li className="user-block__item">
-        {authorizationStatus === AuthorizationStatus.Auth ? (
+        {authorizationStatus === AuthorizationStatus.Auth && User ? (
           <a className="user-block__link" onClick={handleSignoutClick}>
             Sign out
           </a>

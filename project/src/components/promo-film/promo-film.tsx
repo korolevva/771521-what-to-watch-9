@@ -9,7 +9,6 @@ import {
 import { AppRoute } from '../../types/const';
 import FilmBackgroundImage from '../film-background-image/film-background-image';
 import Logo from '../logo/logo';
-// import Header from '../header/header';
 import Spinner from '../spinner/spinner';
 import User from '../user/user';
 

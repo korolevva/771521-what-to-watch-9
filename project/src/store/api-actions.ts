@@ -1,4 +1,3 @@
-/* eslint-disable no-debugger */
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { api, store } from '.';
 import { APIRoute, AuthorizationStatus } from '../types/const';
@@ -74,8 +73,9 @@ export const checkAuthAction = createAsyncThunk(
   'user/checkAuthorization',
   async () => {
     try {
-      await api.get(APIRoute.Login);
+      const { data } = await api.get(APIRoute.Login);
       store.dispatch(changeAuthStatus(AuthorizationStatus.Auth));
+      store.dispatch(setUser(data));
     } catch (error) {
       errorHandle(error);
     }
@@ -211,7 +211,6 @@ export const loadFavoriteFilmsAction = createAsyncThunk(
     try {
       store.dispatch(loadFavoriteFilmsRequest());
       const { data } = await api.get<Film[]>(APIRoute.Favorite);
-
       store.dispatch(loadFavoriteFilmsSuccess(data));
     } catch (error) {
       store.dispatch(loadFavoriteFilmsError());

@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import classNames from 'classnames';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -21,14 +20,16 @@ function SignIn() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore: Unreachable code error
+    if (user && location.state?.prevRoute) {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore: Unreachable code error
-      navigate(location.state.prevRoute);
+      navigate(location.state?.prevRoute);
     }
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore: Unreachable code error
-  }, [user, navigate, location.state.prevRoute]);
+  }, [user, navigate, location.state?.prevRoute]);
 
   const handleButtonClick = (evt: React.MouseEvent<HTMLElement>) => {
     evt.preventDefault();
@@ -69,10 +70,6 @@ function SignIn() {
   const fieldPasswordClasses = classNames('sign-in__field', {
     'sign-in__field--error': passwordError,
   });
-
-  console.log('authError', Boolean(authError));
-  console.log('emailError', emailError);
-  console.log('passwordError', passwordError);
 
   return (
     <>
