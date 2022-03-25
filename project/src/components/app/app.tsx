@@ -4,7 +4,7 @@ import AddReview from '../add-review/add-review';
 import MainPage from '../main-page/main-page';
 import MyList from '../my-list/my-list';
 import NotFoundPage from '../not-found-page/not-found-page';
-import PrivateRoute from '../private-route/private-route';
+import PrivateRoute from '../../hocs/private-route/private-route';
 import Player from '../player/player';
 import SignIn from '../sign-in/sign-in';
 import Movie from '../movie/movie';

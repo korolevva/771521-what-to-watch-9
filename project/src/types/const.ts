@@ -54,4 +54,6 @@ export enum NameSpace {
   sendingComment = 'SENDING_COMMENT',
   promoFilm = 'PROMO',
   favorite = 'FAVORITE',
+  auth = 'AUTH',
+  similar = 'SIMILAR',
 }

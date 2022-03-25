@@ -7,19 +7,19 @@ const initialState: SimilarFilmsData = {
   isFetching: false,
 };
 
-export const filmsData = createSlice({
-  name: NameSpace.films,
+export const similarFilmsData = createSlice({
+  name: NameSpace.similar,
   initialState,
   reducers: {
+    loadSimilarFilmsRequest: (state) => {
+      state.isFetching = true;
+    },
     loadSimilarFilmsSuccess: (state, action) => {
       state.similarFilms = action.payload;
       state.isFetching = false;
-    },
-    loadSimilarFilmsRequest: (state) => {
-      state.isFetching = true;
     },
   },
 });
 
 export const { loadSimilarFilmsSuccess, loadSimilarFilmsRequest } =
-  filmsData.actions;
+  similarFilmsData.actions;
