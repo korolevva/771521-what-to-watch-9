@@ -39,10 +39,10 @@ export enum APIRoute {
   Favorite = '/favorite',
 }
 
-export enum HTTP_CODE {
-  BAD_REQUEST = 400,
-  UNAUTHORIZED = 401,
-  NOT_FOUND = 404,
+export enum HttpCode {
+  BadRequest = 400,
+  UnAuthorized = 401,
+  NotFound = 404,
 }
 
 export enum NameSpace {
