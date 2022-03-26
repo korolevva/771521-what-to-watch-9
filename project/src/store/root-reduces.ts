@@ -11,13 +11,13 @@ import { similarFilmsData } from './similar-films-process/similar-films-process'
 import { myFavoriteFilmsData } from './my-favorite-film-process.test.ts/my-favorite-film-process';
 
 export const rootReducer = combineReducers({
-  [NameSpace.user]: authUserProcess.reducer,
-  [NameSpace.films]: filmsData.reducer,
-  [NameSpace.film]: filmData.reducer,
-  [NameSpace.comments]: commentsData.reducer,
-  [NameSpace.sendingComment]: sendingCommentData.reducer,
-  [NameSpace.promoFilm]: promoFilmData.reducer,
-  [NameSpace.favorite]: myFavoriteFilmsData.reducer,
-  [NameSpace.auth]: changeAuthStatusProcess.reducer,
-  [NameSpace.similar]: similarFilmsData.reducer,
+  [NameSpace.User]: authUserProcess.reducer,
+  [NameSpace.Films]: filmsData.reducer,
+  [NameSpace.Film]: filmData.reducer,
+  [NameSpace.Comments]: commentsData.reducer,
+  [NameSpace.SendingComment]: sendingCommentData.reducer,
+  [NameSpace.PromoFilm]: promoFilmData.reducer,
+  [NameSpace.Favorite]: myFavoriteFilmsData.reducer,
+  [NameSpace.Auth]: changeAuthStatusProcess.reducer,
+  [NameSpace.Similar]: similarFilmsData.reducer,
 });

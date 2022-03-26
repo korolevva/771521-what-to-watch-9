@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from 'react';
-import { useAppDispatch, useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { loadFavoriteFilmsAction } from '../../store/api-actions';
 import Footer from '../footer/footer';
 import Logo from '../logo/logo';

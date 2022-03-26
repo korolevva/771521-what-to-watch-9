@@ -8,7 +8,7 @@ const initialState: SimilarFilmsData = {
 };
 
 export const similarFilmsData = createSlice({
-  name: NameSpace.similar,
+  name: NameSpace.Similar,
   initialState,
   reducers: {
     loadSimilarFilmsRequest: (state) => {

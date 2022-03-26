@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { api, store } from '.';
+import { api, store } from './store';
 import { APIRoute, AuthorizationStatus } from '../types/const';
 import { Film } from '../types/film';
 import { AuthData } from '../types/auth-data';

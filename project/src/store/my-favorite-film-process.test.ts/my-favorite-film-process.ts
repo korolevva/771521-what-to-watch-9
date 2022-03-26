@@ -9,7 +9,7 @@ const initialState: MyFavoriteFilmsData = {
 };
 
 export const myFavoriteFilmsData = createSlice({
-  name: NameSpace.favorite,
+  name: NameSpace.Favorite,
   initialState,
   reducers: {
     loadFavoriteFilmsRequest: (state) => {

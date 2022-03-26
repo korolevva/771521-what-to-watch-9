@@ -10,8 +10,8 @@ import SignIn from '../sign-in/sign-in';
 import Movie from '../movie/movie';
 import { checkAuthAction, loadFilmsAction } from '../../store/api-actions';
 import { useEffect } from 'react';
-import { useAppDispatch } from '../../hooks';
-import { store } from '../../store';
+import { useAppDispatch } from '../../hooks/hooks';
+import { store } from '../../store/store';
 
 store.dispatch(checkAuthAction());
 

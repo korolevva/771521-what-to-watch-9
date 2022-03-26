@@ -1,4 +1,4 @@
-import { useAppSelector } from '../../hooks';
+import { useAppSelector } from '../../hooks/hooks';
 import GenreList from '../genre-list/genre-list';
 import ListFilms from '../list-films/list-films';
 import Loader from '../loader/loader';

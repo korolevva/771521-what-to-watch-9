@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { loadFilmByIdAction } from '../../store/api-actions';
 import Spinner from '../spinner/spinner';
 import dayjs from 'dayjs';

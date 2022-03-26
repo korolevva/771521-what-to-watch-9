@@ -5,7 +5,7 @@ import Tabs from '../tabs/tabs';
 import MoviePageDetails from './movie-page-details';
 import MoviePageOverview from './movie-page-overview';
 import MoviePageReviews from './movie-page-reviews';
-import { useAppDispatch, useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import {
   changeFavoriteFilmStatusAction,
   // eslint-disable-next-line comma-dangle

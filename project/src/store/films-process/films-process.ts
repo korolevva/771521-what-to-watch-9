@@ -9,7 +9,7 @@ const initialState: FilmsData = {
 };
 
 export const filmsData = createSlice({
-  name: NameSpace.films,
+  name: NameSpace.Films,
   initialState,
   reducers: {
     loadFilmsSuccess: (state, action) => {

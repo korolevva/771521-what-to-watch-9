@@ -1,4 +1,4 @@
-import { useAppSelector } from '../../hooks';
+import { useAppSelector } from '../../hooks/hooks';
 import { AuthorizationStatus } from '../../types/const';
 import { Film } from '../../types/film';
 

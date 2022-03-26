@@ -7,7 +7,7 @@ const initialState: ChangeAuthStatusProcess = {
 };
 
 export const changeAuthStatusProcess = createSlice({
-  name: NameSpace.auth,
+  name: NameSpace.Auth,
   initialState,
   reducers: {
     changeAuthStatus: (state, action) => {

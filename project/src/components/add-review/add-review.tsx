@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { loadFilmsAction } from '../../store/api-actions';
 import FilmBackgroundImage from '../film-background-image/film-background-image';
 import Logo from '../logo/logo';

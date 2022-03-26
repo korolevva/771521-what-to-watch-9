@@ -1,4 +1,4 @@
-import { store } from '../store/index.js';
+import { store } from '../store/store.js';
 import { Comment } from './comment.js';
 import { AuthorizationStatus } from './const.js';
 import { Film } from './film.js';

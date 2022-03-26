@@ -9,7 +9,7 @@ const initialState: FilmData = {
 };
 
 export const filmData = createSlice({
-  name: NameSpace.film,
+  name: NameSpace.Film,
   initialState,
   reducers: {
     loadFilmByIdRequest: (state) => {

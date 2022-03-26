@@ -1,13 +1,16 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useAppSelector } from '../../hooks';
+import { useAppSelector } from '../../hooks/hooks';
 import { Genres } from '../../types/const';
 import SmallFilmCard from '../small-film-card/small-film-card';
 
+const FILM_CARD_COUNT_ON_PAGE = 8;
+const BEGIN = 0;
+
 function ListFilms() {
   const { films, genre } = useAppSelector(({ FILMS }) => FILMS);
-  const [showFilmsCount, setShowFilmsCount] = useState(8);
+  const [showFilmsCount, setShowFilmsCount] = useState(FILM_CARD_COUNT_ON_PAGE);
   useEffect(() => {
-    setShowFilmsCount(8);
+    setShowFilmsCount(FILM_CARD_COUNT_ON_PAGE);
   }, [genre]);
 
   const filtredFilmsByGenre =
@@ -15,10 +18,10 @@ function ListFilms() {
       ? films
       : films.filter((film) => film.genre === genre);
 
-  const filmList = filtredFilmsByGenre.slice(0, showFilmsCount);
+  const filmList = filtredFilmsByGenre.slice(BEGIN, showFilmsCount);
 
   const handleShowMoreCLick = () => {
-    setShowFilmsCount(showFilmsCount + 8);
+    setShowFilmsCount(showFilmsCount + FILM_CARD_COUNT_ON_PAGE);
   };
 
   const smallFilmCards = useMemo(

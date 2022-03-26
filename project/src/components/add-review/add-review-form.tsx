@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { sendCommentAction } from '../../store/api-actions';
 import { AppRoute } from '../../types/const';
+
+const MIN_MESSAGE_LENGTH = 50;
+const MAX_MESSAGE_LENGTH = 400;
 
 function AddReviewForm() {
   const [reviewMessage, setReviewMessage] = useState('');
@@ -33,7 +36,8 @@ function AddReviewForm() {
   };
 
   const isMessageEntered =
-    reviewMessage.length >= 50 && reviewMessage.length <= 400;
+    reviewMessage.length >= MIN_MESSAGE_LENGTH &&
+    reviewMessage.length <= MAX_MESSAGE_LENGTH;
 
   const isRatingSelected = rating.length !== 0;
 

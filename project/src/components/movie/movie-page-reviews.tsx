@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { loadCommentsAction } from '../../store/api-actions';
 import Comment from '../comment/comment';
 import Spinner from '../spinner/spinner';

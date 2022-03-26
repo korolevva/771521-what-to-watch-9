@@ -7,7 +7,7 @@ const initialState: SendingCommentData = {
 };
 
 export const sendingCommentData = createSlice({
-  name: NameSpace.sendingComment,
+  name: NameSpace.SendingComment,
   initialState,
   reducers: {
     sendCommentRequest: (state) => {

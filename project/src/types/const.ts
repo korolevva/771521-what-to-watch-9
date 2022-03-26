@@ -46,14 +46,14 @@ export enum HTTP_CODE {
 }
 
 export enum NameSpace {
-  data = 'DATA',
-  films = 'FILMS',
-  user = 'USER',
-  film = 'FILM',
-  comments = 'COMMENTS',
-  sendingComment = 'SENDING_COMMENT',
-  promoFilm = 'PROMO',
-  favorite = 'FAVORITE',
-  auth = 'AUTH',
-  similar = 'SIMILAR',
+  Data = 'DATA',
+  Films = 'FILMS',
+  User = 'USER',
+  Film = 'FILM',
+  Comments = 'COMMENTS',
+  SendingComment = 'SENDING_COMMENT',
+  PromoFilm = 'PROMO',
+  Favorite = 'FAVORITE',
+  Auth = 'AUTH',
+  Similar = 'SIMILAR',
 }

@@ -1,17 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import SmallFilmCard from '../small-film-card/small-film-card';
 import classNames from 'classnames';
-import { useAppDispatch, useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { loadSimilarFilmsAction } from '../../store/api-actions';
 
+const BEGIN = 0;
+const END = 4;
 type Props = {
   genre: string;
   currentFilmId: number;
 };
 
 function SimilarFilms({ genre, currentFilmId }: Props) {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [activeFilm, setActiveFilm] = useState(0);
   const { films } = useAppSelector(({ FILMS }) => FILMS);
   const dispatch = useAppDispatch();
 
@@ -23,7 +23,7 @@ function SimilarFilms({ genre, currentFilmId }: Props) {
 
   const filmsByGenre = films
     .filter((film) => film.genre === genre && film.id !== currentFilmId)
-    .slice(0, 4)
+    .slice(BEGIN, END)
     .map((film) => (
       <SmallFilmCard
         key={film.id}

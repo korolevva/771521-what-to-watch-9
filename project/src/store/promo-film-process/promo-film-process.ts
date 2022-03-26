@@ -9,7 +9,7 @@ const initialState: PromoFilmData = {
 };
 
 export const promoFilmData = createSlice({
-  name: NameSpace.promoFilm,
+  name: NameSpace.PromoFilm,
   initialState,
   reducers: {
     loadPromoFilmRequest: (state) => {
