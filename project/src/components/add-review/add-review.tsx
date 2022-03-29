@@ -2,7 +2,8 @@ import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { loadFilmsAction } from '../../store/api-actions';
-import FilmBackgroundImage from '../film-background-image/film-background-image';
+import { getFilms } from '../../store/films-process/selectors';
+import { getLoadedFilmsStatus } from '../../store/films-process/selectors';
 import Logo from '../logo/logo';
 import Spinner from '../spinner/spinner';
 import User from '../user/user';
@@ -11,7 +12,8 @@ import AddReviewForm from './add-review-form';
 
 function AddReview() {
   const dispatch = useAppDispatch();
-  const { films, isDataLoaded } = useAppSelector(({ FILMS }) => FILMS);
+  const films = useAppSelector(getFilms);
+  const isDataLoaded = useAppSelector(getLoadedFilmsStatus);
   useEffect(() => {
     if (films.length === 0) {
       dispatch(loadFilmsAction());
@@ -29,7 +31,9 @@ function AddReview() {
       <VisuallyHidden />
       <section className="film-card film-card--full">
         <div className="film-card__header">
-          <FilmBackgroundImage film={film} />
+          <div className="film-card__bg">
+            <img src={film.backgroundImage} alt={film.name} />
+          </div>
           <h1 className="visually-hidden">WTW</h1>
           <header className="page-header">
             <Logo />

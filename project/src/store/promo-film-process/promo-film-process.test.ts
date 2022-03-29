@@ -1,11 +1,8 @@
 import { fakePromoFilm } from '../../utils/mocks';
-import {
-  loadPromoFilmError,
-  loadPromoFilmRequest,
-  loadPromoFilmSuccess,
-  // eslint-disable-next-line comma-dangle
-  promoFilmData,
-} from './promo-film-process';
+import { loadPromoFilmError } from './promo-film-process';
+import { loadPromoFilmRequest } from './promo-film-process';
+import { loadPromoFilmSuccess } from './promo-film-process';
+import { promoFilmData } from './promo-film-process';
 
 describe('Редьюсер: PromoFilmData', () => {
   it('без дополнительных параметров должен возвращать начальное состояние', () => {

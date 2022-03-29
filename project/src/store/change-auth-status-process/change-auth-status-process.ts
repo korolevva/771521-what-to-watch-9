@@ -4,16 +4,31 @@ import { AuthorizationStatus, NameSpace } from '../../types/const';
 
 const initialState: ChangeAuthStatusProcess = {
   authorizationStatus: AuthorizationStatus.Unknown,
+  isFetching: false,
 };
 
 export const changeAuthStatusProcess = createSlice({
   name: NameSpace.Auth,
   initialState,
   reducers: {
+    checkAuthStatusRequest: (state) => {
+      state.isFetching = true;
+    },
+    checkAuthStatusSuccess: (state) => {
+      state.isFetching = false;
+    },
+    checkAuthStatusError: (state) => {
+      state.isFetching = false;
+    },
     changeAuthStatus: (state, action) => {
       state.authorizationStatus = action.payload;
     },
   },
 });
 
-export const { changeAuthStatus } = changeAuthStatusProcess.actions;
+export const {
+  checkAuthStatusRequest,
+  checkAuthStatusSuccess,
+  checkAuthStatusError,
+  changeAuthStatus,
+} = changeAuthStatusProcess.actions;

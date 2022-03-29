@@ -3,7 +3,6 @@ import dayjs from 'dayjs';
 type Props = {
   comment: string;
   date: string;
-  id: number;
   rating: number;
   user: {
     id: number;
@@ -11,7 +10,7 @@ type Props = {
   };
 };
 
-function Comment({ comment, rating, date, user, id }: Props) {
+function Comment({ comment, rating, date, user }: Props) {
   const formattedDate = dayjs(date).format('MMMM DD, YYYY');
 
   return (

@@ -1,20 +1,21 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
-import {
-  changeFavoriteFilmStatusAction,
-  // eslint-disable-next-line comma-dangle
-  loadPromoFilmAction,
-} from '../../store/api-actions';
-import { AppRoute } from '../../types/const';
-import FilmBackgroundImage from '../film-background-image/film-background-image';
+import { changeFavoriteFilmStatusAction } from '../../store/api-actions';
+import { loadPromoFilmAction } from '../../store/api-actions';
+import { getAuthorizationStatus } from '../../store/change-auth-status-process/selectors';
+import { getErrorPromoFilm } from '../../store/promo-film-process/selectors';
+import { getPromoFilm } from '../../store/promo-film-process/selectors';
+import { AppRoute, AuthorizationStatus } from '../../types/const';
 import Logo from '../logo/logo';
 import Spinner from '../spinner/spinner';
 import User from '../user/user';
 
 function PromoFilm() {
   const dispatch = useAppDispatch();
-  const { film, isFetching, error } = useAppSelector(({ PROMO }) => PROMO);
+  const film = useAppSelector(getPromoFilm);
+  const error = useAppSelector(getErrorPromoFilm);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
   useEffect(() => {
     dispatch(loadPromoFilmAction());
@@ -24,7 +25,7 @@ function PromoFilm() {
     return null;
   }
 
-  if (isFetching || !film) {
+  if (!film) {
     return <Spinner />;
   }
 
@@ -40,7 +41,9 @@ function PromoFilm() {
 
   return (
     <section className="film-card">
-      <FilmBackgroundImage film={film} />
+      <div className="film-card__bg">
+        <img src={film.backgroundImage} alt={film.name} />
+      </div>
       <h1 className="visually-hidden">WTW</h1>
       <header className="page-header film-card__head">
         <Logo />
@@ -63,7 +66,10 @@ function PromoFilm() {
               <span className="film-card__year">{film.released}</span>
             </p>
             <div className="film-card__buttons">
-              <Link to={`${AppRoute.Play}/${film.id}`}>
+              <Link
+                to={`${AppRoute.Play}/${film.id}`}
+                style={{ textDecoration: 'none', marginRight: '14px' }}
+              >
                 <button
                   className="btn btn--play film-card__button"
                   type="button"
@@ -74,22 +80,24 @@ function PromoFilm() {
                   <span>Play</span>
                 </button>
               </Link>
-              <button
-                onClick={handleFavoriteButtonClick}
-                className="btn btn--list film-card__button"
-                type="button"
-              >
-                {film.isFavorite ? (
-                  <svg viewBox="0 0 18 14" width="18" height="14">
-                    <use xlinkHref="#in-list"></use>
-                  </svg>
-                ) : (
-                  <svg viewBox="0 0 19 20" width="19" height="20">
-                    <use xlinkHref="#add"></use>
-                  </svg>
-                )}
-                <span>My list</span>
-              </button>
+              {authorizationStatus === AuthorizationStatus.Auth ? (
+                <button
+                  onClick={handleFavoriteButtonClick}
+                  className="btn btn--list film-card__button"
+                  type="button"
+                >
+                  {film.isFavorite ? (
+                    <svg viewBox="0 0 18 14" width="18" height="14">
+                      <use xlinkHref="#in-list"></use>
+                    </svg>
+                  ) : (
+                    <svg viewBox="0 0 19 20" width="19" height="20">
+                      <use xlinkHref="#add"></use>
+                    </svg>
+                  )}
+                  <span>My list</span>
+                </button>
+              ) : null}
             </div>
           </div>
         </div>

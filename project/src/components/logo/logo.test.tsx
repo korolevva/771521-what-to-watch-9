@@ -1,12 +1,9 @@
 import { render, screen } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
-import {
-  BrowserRouter,
-  Route,
-  Routes,
-  // eslint-disable-next-line comma-dangle
-  unstable_HistoryRouter as HistoryRouter,
-} from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
+import { Route } from 'react-router-dom';
+import { Routes } from 'react-router-dom';
+import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
 import Logo from './logo';
 import userEvent from '@testing-library/user-event';
 

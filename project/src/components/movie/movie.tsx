@@ -6,11 +6,8 @@ import MoviePageDetails from './movie-page-details';
 import MoviePageOverview from './movie-page-overview';
 import MoviePageReviews from './movie-page-reviews';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
-import {
-  changeFavoriteFilmStatusAction,
-  // eslint-disable-next-line comma-dangle
-  loadFilmByIdAction,
-} from '../../store/api-actions';
+import { changeFavoriteFilmStatusAction } from '../../store/api-actions';
+import { loadFilmByIdAction } from '../../store/api-actions';
 import { useEffect } from 'react';
 import Spinner from '../spinner/spinner';
 import NotFoundPage from '../not-found-page/not-found-page';
@@ -18,12 +15,15 @@ import Logo from '../logo/logo';
 import User from '../user/user';
 import VisuallyHidden from '../visually-hidden/visually-hidden';
 import Footer from '../footer/footer';
-import FilmBackgroundImage from '../film-background-image/film-background-image';
+import { getAuthorizationStatus } from '../../store/change-auth-status-process/selectors';
+import { getError } from '../../store/film-process/selectors';
+import { getFilm } from '../../store/film-process/selectors';
 
 function Movie() {
   const dispatch = useAppDispatch();
-  const { film, isFetching, error } = useAppSelector(({ FILM }) => FILM);
-  const { authorizationStatus } = useAppSelector(({ AUTH }) => AUTH);
+  const error = useAppSelector(getError);
+  const film = useAppSelector(getFilm);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const { id } = useParams();
 
   useEffect(() => {
@@ -36,7 +36,7 @@ function Movie() {
     return <NotFoundPage />;
   }
 
-  if (isFetching || !film) {
+  if (!film) {
     return <Spinner />;
   }
 
@@ -52,7 +52,9 @@ function Movie() {
       <VisuallyHidden />
       <section className="film-card film-card--full">
         <div className="film-card__hero">
-          <FilmBackgroundImage film={film} />
+          <div className="film-card__bg">
+            <img src={film.backgroundImage} alt={film.name} />
+          </div>
           <h1 className="visually-hidden">WTW</h1>
           <header className="page-header film-card__head">
             <Logo />
@@ -66,7 +68,10 @@ function Movie() {
                 <span className="film-card__year">{film.released}</span>
               </p>
               <div className="film-card__buttons">
-                <Link to={`${AppRoute.Play}/${id}`}>
+                <Link
+                  to={`${AppRoute.Play}/${id}`}
+                  style={{ textDecoration: 'none', marginRight: '14px' }}
+                >
                   <button
                     className="btn btn--play film-card__button"
                     type="button"
@@ -77,22 +82,24 @@ function Movie() {
                     <span>Play</span>
                   </button>
                 </Link>
-                <button
-                  onClick={handleFavoriteButtonClick}
-                  className="btn btn--list film-card__button"
-                  type="button"
-                >
-                  {film.isFavorite ? (
-                    <svg viewBox="0 0 18 14" width="18" height="14">
-                      <use xlinkHref="#in-list"></use>
-                    </svg>
-                  ) : (
-                    <svg viewBox="0 0 19 20" width="19" height="20">
-                      <use xlinkHref="#add"></use>
-                    </svg>
-                  )}
-                  <span>My list</span>
-                </button>
+                {authorizationStatus === AuthorizationStatus.Auth ? (
+                  <button
+                    onClick={handleFavoriteButtonClick}
+                    className="btn btn--list film-card__button"
+                    type="button"
+                  >
+                    {film.isFavorite ? (
+                      <svg viewBox="0 0 18 14" width="18" height="14">
+                        <use xlinkHref="#in-list"></use>
+                      </svg>
+                    ) : (
+                      <svg viewBox="0 0 19 20" width="19" height="20">
+                        <use xlinkHref="#add"></use>
+                      </svg>
+                    )}
+                    <span>My list</span>
+                  </button>
+                ) : null}
                 {authorizationStatus === AuthorizationStatus.Auth ? (
                   <Link
                     to={`${AppRoute.Film}/${id}${AppRoute.Review}`}
@@ -134,7 +141,7 @@ function Movie() {
         </div>
       </section>
       <div className="page-content">
-        <SimilarFilms genre={film.genre} currentFilmId={film.id} />
+        <SimilarFilms currentFilmId={film.id} />
         <Footer />
       </div>
     </>

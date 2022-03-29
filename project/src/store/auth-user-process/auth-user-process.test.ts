@@ -1,11 +1,8 @@
 import { fakeUser } from '../../utils/mocks';
-import {
-  authUserProcess,
-  checkAuthorizationError,
-  checkAuthorizationRequest,
-  // eslint-disable-next-line comma-dangle
-  setUser,
-} from './auth-user-process';
+import { authUserProcess } from './auth-user-process';
+import { checkAuthorizationError } from './auth-user-process';
+import { checkAuthorizationRequest } from './auth-user-process';
+import { setUser } from './auth-user-process';
 
 describe('Редьюсер: authUserProcess', () => {
   it('без дополнительных параметров должен возвращать начальное состояние', () => {

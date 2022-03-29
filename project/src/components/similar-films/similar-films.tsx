@@ -3,26 +3,24 @@ import SmallFilmCard from '../small-film-card/small-film-card';
 import classNames from 'classnames';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { loadSimilarFilmsAction } from '../../store/api-actions';
+import { getSimilarFilms } from '../../store/similar-films-process/selectors';
 
 const BEGIN = 0;
 const END = 4;
 type Props = {
-  genre: string;
   currentFilmId: number;
 };
 
-function SimilarFilms({ genre, currentFilmId }: Props) {
-  const { films } = useAppSelector(({ FILMS }) => FILMS);
+function SimilarFilms({ currentFilmId }: Props) {
   const dispatch = useAppDispatch();
+  const similarFilms = useAppSelector(getSimilarFilms);
 
   useEffect(() => {
-    if (films.length === 0) {
-      dispatch(loadSimilarFilmsAction(String(currentFilmId)));
-    }
-  }, [dispatch, films.length, currentFilmId]);
+    dispatch(loadSimilarFilmsAction(String(currentFilmId)));
+  }, [dispatch, currentFilmId]);
 
-  const filmsByGenre = films
-    .filter((film) => film.genre === genre && film.id !== currentFilmId)
+  const filmsByGenre = similarFilms
+    .filter((film) => film.id !== currentFilmId)
     .slice(BEGIN, END)
     .map((film) => (
       <SmallFilmCard
@@ -39,8 +37,7 @@ function SimilarFilms({ genre, currentFilmId }: Props) {
     <section className="catalog catalog--like-this">
       <h2
         className={classNames(
-          // eslint-disable-next-line camelcase
-          { catalog__title: isTitleVisible },
+          { ['catalog__title']: isTitleVisible },
           { 'visually-hidden': !isTitleVisible },
         )}
       >

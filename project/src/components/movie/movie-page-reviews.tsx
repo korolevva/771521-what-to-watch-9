@@ -2,12 +2,15 @@ import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { loadCommentsAction } from '../../store/api-actions';
+import { getComments } from '../../store/comments-process/selectors';
+import { getFetchedCommentsStatus } from '../../store/comments-process/selectors';
 import Comment from '../comment/comment';
 import Spinner from '../spinner/spinner';
 
 function MoviePageReviews() {
   const dispatch = useAppDispatch();
-  const { comments, isFetching } = useAppSelector(({ COMMENTS }) => COMMENTS);
+  const isFetching = useAppSelector(getFetchedCommentsStatus);
+  const comments = useAppSelector(getComments);
   const { id } = useParams();
 
   useEffect(() => {
@@ -16,7 +19,7 @@ function MoviePageReviews() {
     }
   }, [dispatch, id]);
 
-  if (comments.length === 0 || isFetching) {
+  if (isFetching) {
     return <Spinner />;
   }
 

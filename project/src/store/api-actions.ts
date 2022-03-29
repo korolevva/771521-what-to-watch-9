@@ -5,59 +5,40 @@ import { Film } from '../types/film';
 import { AuthData } from '../types/auth-data';
 import { dropToken, saveToken } from '../services/token';
 import errorHandle from '../services/error-handle';
-import {
-  loadFilmsRequest,
-  // eslint-disable-next-line comma-dangle
-  loadFilmsSuccess,
-} from './films-process/films-process';
-import {
-  checkAuthorizationError,
-  checkAuthorizationRequest,
-  // eslint-disable-next-line comma-dangle
-  setUser,
-} from './auth-user-process/auth-user-process';
-import {
-  loadFilmByIdError,
-  loadFilmByIdRequest,
-  // eslint-disable-next-line comma-dangle
-  loadFilmByIdSuccess,
-} from './film-process/film-process';
-import {
-  loadSimilarFilmsRequest,
-  // eslint-disable-next-line comma-dangle
-  loadSimilarFilmsSuccess,
-} from './similar-films-process/similar-films-process';
-import {
-  loadCommentsError,
-  loadCommentsRequest,
-  // eslint-disable-next-line comma-dangle
-  loadCommentsSuccess,
-} from './comments-process/comments-process';
+import { loadFilmsSuccess } from './films-process/films-process';
+import { loadFilmsError } from './films-process/films-process';
+import { loadFilmsRequest } from './films-process/films-process';
+import { checkAuthorizationError } from './auth-user-process/auth-user-process';
+import { checkAuthorizationRequest } from './auth-user-process/auth-user-process';
+import { setUser } from './auth-user-process/auth-user-process';
+import { loadFilmByIdError } from './film-process/film-process';
+import { loadFilmByIdRequest } from './film-process/film-process';
+import { loadFilmByIdSuccess } from './film-process/film-process';
+import { loadSimilarFilmsRequest } from './similar-films-process/similar-films-process';
+import { loadSimilarFilmsError } from './similar-films-process/similar-films-process';
+import { loadSimilarFilmsSuccess } from './similar-films-process/similar-films-process';
+import { loadCommentsRequest } from './comments-process/comments-process';
+import { loadCommentsSuccess } from './comments-process/comments-process';
+import { loadCommentsError } from './comments-process/comments-process';
 import { SendingCommentData } from '../types/sending-comment-data';
-import {
-  sendCommentError,
-  sendCommentRequest,
-  // eslint-disable-next-line comma-dangle
-  sendCommentSuccess,
-} from './sending-comment-process/sending-comment-process';
+import { sendCommentError } from './sending-comment-process/sending-comment-process';
+import { sendCommentRequest } from './sending-comment-process/sending-comment-process';
+import { sendCommentSuccess } from './sending-comment-process/sending-comment-process';
 import { toast } from 'react-toastify';
-import {
-  loadPromoFilmError,
-  loadPromoFilmRequest,
-  // eslint-disable-next-line comma-dangle
-  loadPromoFilmSuccess,
-} from './promo-film-process/promo-film-process';
+import { loadPromoFilmError } from './promo-film-process/promo-film-process';
+import { loadPromoFilmRequest } from './promo-film-process/promo-film-process';
+import { loadPromoFilmSuccess } from './promo-film-process/promo-film-process';
 import { User } from '../types/user';
 import { changeAuthStatus } from './change-auth-status-process/change-auth-status-process';
-import {
-  changeFavoriteFilmError,
-  changeFavoriteFilmRequest,
-  changeFavoriteFilmSuccess,
-  loadFavoriteFilmsError,
-  loadFavoriteFilmsRequest,
-  // eslint-disable-next-line comma-dangle
-  loadFavoriteFilmsSuccess,
-} from './my-favorite-film-process.test.ts/my-favorite-film-process';
+import { checkAuthStatusError } from './change-auth-status-process/change-auth-status-process';
+import { checkAuthStatusRequest } from './change-auth-status-process/change-auth-status-process';
+import { checkAuthStatusSuccess } from './change-auth-status-process/change-auth-status-process';
+import { changeFavoriteFilmError } from './my-favorite-film-process.test.ts/my-favorite-film-process';
+import { changeFavoriteFilmRequest } from './my-favorite-film-process.test.ts/my-favorite-film-process';
+import { changeFavoriteFilmSuccess } from './my-favorite-film-process.test.ts/my-favorite-film-process';
+import { loadFavoriteFilmsError } from './my-favorite-film-process.test.ts/my-favorite-film-process';
+import { loadFavoriteFilmsRequest } from './my-favorite-film-process.test.ts/my-favorite-film-process';
+import { loadFavoriteFilmsSuccess } from './my-favorite-film-process.test.ts/my-favorite-film-process';
 
 export const loadFilmsAction = createAsyncThunk('data/loadFilms', async () => {
   try {
@@ -65,6 +46,7 @@ export const loadFilmsAction = createAsyncThunk('data/loadFilms', async () => {
     const { data } = await api.get<Film[]>(APIRoute.Films);
     store.dispatch(loadFilmsSuccess(data));
   } catch (error) {
+    store.dispatch(loadFilmsError(error));
     errorHandle(error);
   }
 });
@@ -73,10 +55,13 @@ export const checkAuthAction = createAsyncThunk(
   'user/checkAuthorization',
   async () => {
     try {
+      store.dispatch(checkAuthStatusRequest());
       const { data } = await api.get(APIRoute.Login);
       store.dispatch(changeAuthStatus(AuthorizationStatus.Auth));
+      store.dispatch(checkAuthStatusSuccess());
       store.dispatch(setUser(data));
     } catch (error) {
+      store.dispatch(checkAuthStatusError());
       errorHandle(error);
     }
   },
@@ -138,6 +123,7 @@ export const loadSimilarFilmsAction = createAsyncThunk(
       const { data } = await api.get<Film[]>(`${APIRoute.Films}/${id}/similar`);
       store.dispatch(loadSimilarFilmsSuccess(data));
     } catch (error) {
+      store.dispatch(loadSimilarFilmsError());
       errorHandle(error);
     }
   },
@@ -184,7 +170,7 @@ export const sendCommentAction = createAsyncThunk(
       );
       store.dispatch(sendCommentSuccess());
     } catch (error) {
-      store.dispatch(sendCommentError());
+      store.dispatch(sendCommentError(error));
       errorHandle(error);
     }
   },
@@ -195,7 +181,7 @@ export const loadPromoFilmAction = createAsyncThunk(
   async () => {
     try {
       store.dispatch(loadPromoFilmRequest());
-      const { data } = await api.get<Film>(APIRoute.PromoFilm);
+      const { data } = await api.get<Film>(`${APIRoute.PromoFilm}`);
       store.dispatch(loadPromoFilmSuccess(data));
     } catch (error) {
       store.dispatch(loadPromoFilmError(error));

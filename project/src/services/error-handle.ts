@@ -3,7 +3,7 @@ import { ErrorType } from '../types/error';
 import request from 'axios';
 import { toast } from 'react-toastify';
 
-export const ErrorHandle = (error: ErrorType): void => {
+export const errorHandle = (error: ErrorType): void => {
   if (!request.isAxiosError(error)) {
     throw error;
   }
@@ -25,4 +25,4 @@ export const ErrorHandle = (error: ErrorType): void => {
   }
 };
 
-export default ErrorHandle;
+export default errorHandle;

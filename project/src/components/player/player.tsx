@@ -8,10 +8,15 @@ import duration from 'dayjs/plugin/duration';
 import NotFoundPage from '../not-found-page/not-found-page';
 import useVideoPlayer from '../../hooks/use-video-player';
 import VisuallyHidden from '../visually-hidden/visually-hidden';
+import { getError } from '../../store/film-process/selectors';
+import { getFetchedFilmStatus } from '../../store/film-process/selectors';
+import { getFilm } from '../../store/film-process/selectors';
 dayjs.extend(duration);
 
 function Player() {
-  const { film, isFetching, error } = useAppSelector(({ FILM }) => FILM);
+  const error = useAppSelector(getError);
+  const film = useAppSelector(getFilm);
+  const isFetching = useAppSelector(getFetchedFilmStatus);
   const videoRef = useRef<HTMLVideoElement>(null);
   const {
     playerState,

@@ -1,6 +1,6 @@
 import { store } from '../store/store.js';
 import { Comment } from './comment.js';
-import { AuthorizationStatus } from './const.js';
+import { AuthorizationStatus, CommentSendingStatus } from './const.js';
 import { Film } from './film.js';
 import { User } from './user.js';
 
@@ -12,12 +12,14 @@ export type AuthUserProcess = {
 
 export type ChangeAuthStatusProcess = {
   authorizationStatus: AuthorizationStatus;
+  isFetching: boolean;
 };
 
 export type FilmsData = {
   genre: string;
   films: Film[];
   isDataLoaded: boolean;
+  error: Error | null;
 };
 
 export type FilmData = {
@@ -38,6 +40,8 @@ export type CommentsData = {
 
 export type SendingCommentData = {
   isFetching: boolean;
+  error: Error | null;
+  commentSendingStatus: CommentSendingStatus;
 };
 
 export type PromoFilmData = {

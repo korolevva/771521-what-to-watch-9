@@ -1,10 +1,15 @@
 import classNames from 'classnames';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { changeGenre } from '../../store/films-process/films-process';
+import { getFilms, getGenreFilms } from '../../store/films-process/selectors';
 import { Genres } from '../../types/const';
 
+const FILM_CARD_COUNT_ON_PAGE = 10;
+const BEGIN = 0;
+
 function GenreList() {
-  const { films, genre: selectedGenre } = useAppSelector(({ FILMS }) => FILMS);
+  const selectedGenre = useAppSelector(getGenreFilms);
+  const films = useAppSelector(getFilms);
   const dispatch = useAppDispatch();
   const genres = films.map((film) => film.genre);
   const uniqueGenres = [Genres.AllGenres, ...Array.from(new Set(genres))].map(
@@ -21,9 +26,11 @@ function GenreList() {
     dispatch(changeGenre({ genre }));
   };
 
+  const filmList = uniqueGenres.slice(BEGIN, FILM_CARD_COUNT_ON_PAGE);
+
   return (
     <ul className="catalog__genres-list">
-      {uniqueGenres.map(({ genre, id }, index) => (
+      {filmList.map(({ genre, id }) => (
         <li
           key={id}
           className={classNames('catalog__genres-item', {

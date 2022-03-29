@@ -6,6 +6,7 @@ const initialState: FilmsData = {
   genre: Genres.AllGenres.toString(),
   films: [],
   isDataLoaded: false,
+  error: null,
 };
 
 export const filmsData = createSlice({
@@ -18,6 +19,11 @@ export const filmsData = createSlice({
     },
     loadFilmsRequest: (state) => {
       state.isDataLoaded = true;
+      state.error = null;
+    },
+    loadFilmsError: (state, action) => {
+      state.isDataLoaded = false;
+      state.error = action.payload;
     },
     changeGenre: (state, action) => {
       const { genre } = action.payload;
@@ -26,5 +32,9 @@ export const filmsData = createSlice({
   },
 });
 
-export const { loadFilmsSuccess, loadFilmsRequest, changeGenre } =
-  filmsData.actions;
+export const {
+  loadFilmsSuccess,
+  loadFilmsRequest,
+  changeGenre,
+  loadFilmsError,
+} = filmsData.actions;

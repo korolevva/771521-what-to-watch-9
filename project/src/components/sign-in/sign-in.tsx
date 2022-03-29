@@ -3,14 +3,21 @@ import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { loginAction } from '../../store/api-actions';
+import { getUser } from '../../store/auth-user-process/selectors';
+import { getUserError } from '../../store/auth-user-process/selectors';
+import { getAuthorizationStatus } from '../../store/change-auth-status-process/selectors';
+import { getFetchedAuthStatus } from '../../store/change-auth-status-process/selectors';
+import { AppRoute, AuthorizationStatus } from '../../types/const';
 import Footer from '../footer/footer';
+import Loader from '../loader/loader';
 import Logo from '../logo/logo';
 import VisuallyHidden from '../visually-hidden/visually-hidden';
 
-function SignIn() {
-  const { user, error: authError } = useAppSelector(({ USER }) => USER);
+interface CustomizedLocationState {
+  prevRoute: { pathname: string };
+}
 
-  const location = useLocation();
+function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState(false);
@@ -19,17 +26,25 @@ function SignIn() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const location = useLocation();
+  const state = location.state as CustomizedLocationState;
+  const isFetching = useAppSelector(getFetchedAuthStatus);
+  const user = useAppSelector(getUser);
+  const authError = useAppSelector(getUserError);
+
+  const isAuthUser = authorizationStatus === AuthorizationStatus.Auth;
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore: Unreachable code error
-    if (user && location.state?.prevRoute) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore: Unreachable code error
-      navigate(location.state?.prevRoute);
+    if (isAuthUser) {
+      navigate(AppRoute.Main);
     }
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore: Unreachable code error
-  }, [user, navigate, location.state?.prevRoute]);
+  }, [isAuthUser, navigate]);
+
+  useEffect(() => {
+    if (user && state?.prevRoute) {
+      navigate(state?.prevRoute);
+    }
+  }, [user, navigate, state?.prevRoute]);
 
   const handleButtonClick = (evt: React.MouseEvent<HTMLElement>) => {
     evt.preventDefault();
@@ -39,8 +54,7 @@ function SignIn() {
   const handleLoginChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(evt.target.value);
     const re =
-      // eslint-disable-next-line no-useless-escape
-      /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+      /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
     if (!re.test(String(evt.target.value).toLowerCase())) {
       setEmailError(true);
     } else {
@@ -50,9 +64,7 @@ function SignIn() {
 
   const handlePasswordChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(evt.target.value);
-    const re =
-      // eslint-disable-next-line no-useless-escape
-      /^.*(?=.{2,})(?=.*\d)(?=.*[a-zA-Z]).*$/i;
+    const re = /^.*(?=.{2,})(?=.*\d)(?=.*[a-zA-Z]).*$/i;
     if (!re.test(String(evt.target.value).toLowerCase())) {
       setPasswordError(true);
     } else {
@@ -72,7 +84,7 @@ function SignIn() {
   });
 
   return (
-    <>
+    <Loader show={isFetching}>
       <VisuallyHidden />
       <div className="user-page">
         <header className="page-header user-page__head">
@@ -155,7 +167,7 @@ function SignIn() {
         </div>
         <Footer />
       </div>
-    </>
+    </Loader>
   );
 }
 export default SignIn;

@@ -1,11 +1,7 @@
 import { fakeFilm } from '../../utils/mocks';
-import {
-  filmData,
-  loadFilmByIdError,
-  loadFilmByIdRequest,
-  // eslint-disable-next-line comma-dangle
-  loadFilmByIdSuccess,
-} from './film-process';
+import { filmData, loadFilmByIdError } from './film-process';
+import { loadFilmByIdRequest } from './film-process';
+import { loadFilmByIdSuccess } from './film-process';
 
 describe('Редьюсер: FilmData', () => {
   it('без дополнительных параметров должен возвращать начальное состояние', () => {

@@ -1,9 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { NameSpace } from '../../types/const';
+import { CommentSendingStatus, NameSpace } from '../../types/const';
 import { SendingCommentData } from '../../types/state';
 
 const initialState: SendingCommentData = {
   isFetching: false,
+  error: null,
+  commentSendingStatus: CommentSendingStatus.Unknown,
 };
 
 export const sendingCommentData = createSlice({
@@ -12,12 +14,17 @@ export const sendingCommentData = createSlice({
   reducers: {
     sendCommentRequest: (state) => {
       state.isFetching = true;
+      state.commentSendingStatus = CommentSendingStatus.Unknown;
     },
     sendCommentSuccess: (state) => {
       state.isFetching = false;
+      state.error = null;
+      state.commentSendingStatus = CommentSendingStatus.Success;
     },
-    sendCommentError: (state) => {
+    sendCommentError: (state, action) => {
       state.isFetching = false;
+      state.error = action.payload;
+      state.commentSendingStatus = CommentSendingStatus.Error;
     },
   },
 });

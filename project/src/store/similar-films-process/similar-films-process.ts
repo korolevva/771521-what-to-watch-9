@@ -18,8 +18,14 @@ export const similarFilmsData = createSlice({
       state.similarFilms = action.payload;
       state.isFetching = false;
     },
+    loadSimilarFilmsError: (state) => {
+      state.isFetching = false;
+    },
   },
 });
 
-export const { loadSimilarFilmsSuccess, loadSimilarFilmsRequest } =
-  similarFilmsData.actions;
+export const {
+  loadSimilarFilmsSuccess,
+  loadSimilarFilmsRequest,
+  loadSimilarFilmsError,
+} = similarFilmsData.actions;

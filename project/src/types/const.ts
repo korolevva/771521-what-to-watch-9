@@ -23,7 +23,6 @@ export enum Genres {
   AllGenres = 'All genres',
   Drama = 'Drama',
   Fantastic = 'Fantastic',
-  History = 'History',
   Biography = 'Biography',
   Thriller = 'Thriller',
   Horror = 'Horror',
@@ -56,4 +55,10 @@ export enum NameSpace {
   Favorite = 'FAVORITE',
   Auth = 'AUTH',
   Similar = 'SIMILAR',
+}
+
+export enum CommentSendingStatus {
+  Unknown = 'UNKNOWN',
+  Success = 'SUCCESS',
+  Error = 'ERROR',
 }

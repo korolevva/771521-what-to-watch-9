@@ -1,11 +1,8 @@
 import { fakeComments } from '../../utils/mocks';
-import {
-  commentsData,
-  loadCommentsError,
-  loadCommentsRequest,
-  // eslint-disable-next-line comma-dangle
-  loadCommentsSuccess,
-} from './comments-process';
+import { commentsData } from './comments-process';
+import { loadCommentsError } from './comments-process';
+import { loadCommentsRequest } from './comments-process';
+import { loadCommentsSuccess } from './comments-process';
 
 describe('Редьюсер: CommentsData', () => {
   it('без дополнительных параметров должен возвращать начальное состояние', () => {

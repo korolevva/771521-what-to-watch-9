@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { sendCommentAction } from '../../store/api-actions';
-import { AppRoute } from '../../types/const';
+import { getLoadedSendingCommentData } from '../../store/sending-comment-process/selectors';
+import { getCommentSendingStatus } from '../../store/sending-comment-process/selectors';
+import { AppRoute, CommentSendingStatus } from '../../types/const';
 
 const MIN_MESSAGE_LENGTH = 50;
 const MAX_MESSAGE_LENGTH = 400;
@@ -14,9 +16,22 @@ function AddReviewForm() {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const { isFetching } = useAppSelector(
-    ({ SENDING_COMMENT }) => SENDING_COMMENT,
-  );
+  const isFetching = useAppSelector(getLoadedSendingCommentData);
+  const commentSendingStatus = useAppSelector(getCommentSendingStatus);
+
+  const isMessageEntered =
+    reviewMessage.length >= MIN_MESSAGE_LENGTH &&
+    reviewMessage.length <= MAX_MESSAGE_LENGTH;
+
+  const isRatingSelected = rating.length !== 0;
+
+  const isValidForm = isMessageEntered && isRatingSelected;
+
+  useEffect(() => {
+    if (commentSendingStatus === CommentSendingStatus.Success) {
+      navigate(`${AppRoute.Film}/${id}`);
+    }
+  }, [id, navigate, commentSendingStatus]);
 
   const handleReviewChange = (evt: React.ChangeEvent<HTMLTextAreaElement>) => {
     const { value } = evt.target;
@@ -31,17 +46,8 @@ function AddReviewForm() {
     evt.preventDefault();
     if (id) {
       dispatch(sendCommentAction({ reviewMessage, rating, id }));
-      navigate(`${AppRoute.Film}/${id}`);
     }
   };
-
-  const isMessageEntered =
-    reviewMessage.length >= MIN_MESSAGE_LENGTH &&
-    reviewMessage.length <= MAX_MESSAGE_LENGTH;
-
-  const isRatingSelected = rating.length !== 0;
-
-  const isValidForm = isMessageEntered && isRatingSelected;
 
   return (
     <div className="add-review">
@@ -171,8 +177,8 @@ function AddReviewForm() {
             id="review-text"
             placeholder="Review text"
             value={reviewMessage}
-            maxLength={400}
-            minLength={50}
+            maxLength={MAX_MESSAGE_LENGTH}
+            minLength={MIN_MESSAGE_LENGTH}
           />
           <div className="add-review__submit">
             <button

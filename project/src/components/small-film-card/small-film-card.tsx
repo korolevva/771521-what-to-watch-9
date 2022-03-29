@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../types/const';
-import VideoPlayer from '../videoplayer/videoplayer';
+import VideoPlayer from '../video-player/video-player';
 
 type Props = {
   name: string;

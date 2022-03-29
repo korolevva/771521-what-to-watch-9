@@ -1,14 +1,11 @@
 import { fakeFilms } from '../../utils/mocks';
-import {
-  changeFavoriteFilmError,
-  changeFavoriteFilmRequest,
-  changeFavoriteFilmSuccess,
-  loadFavoriteFilmsError,
-  loadFavoriteFilmsRequest,
-  loadFavoriteFilmsSuccess,
-  // eslint-disable-next-line comma-dangle
-  myFavoriteFilmsData,
-} from './my-favorite-film-process';
+import { changeFavoriteFilmRequest } from './my-favorite-film-process';
+import { loadFavoriteFilmsRequest } from './my-favorite-film-process';
+import { changeFavoriteFilmError } from './my-favorite-film-process';
+import { changeFavoriteFilmSuccess } from './my-favorite-film-process';
+import { loadFavoriteFilmsError } from './my-favorite-film-process';
+import { loadFavoriteFilmsSuccess } from './my-favorite-film-process';
+import { myFavoriteFilmsData } from './my-favorite-film-process';
 
 describe('Редьюсер: MyFavoriteFilmsData', () => {
   it('без дополнительных параметров должен возвращать начальное состояние', () => {
